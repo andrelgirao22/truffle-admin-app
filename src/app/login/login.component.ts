@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Login } from './login.model';
+import { LoginService } from './login.service';
+
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'truffle-adm-login',
@@ -8,22 +11,26 @@ import { Login } from './login.model';
 export class LoginComponent implements OnInit {
 
   message: string
-  isSignedFailed: boolean = false
-
-  constructor() { }
+  
+  constructor(
+    private loginService: LoginService,
+    private router: Router) { }
 
   ngOnInit() {
   }
 
-  login(login: any): void {
-    console.log(login)
-    if(login.username === 'admin' && login.password === '123') {
-      this.isSignedFailed = false
-      
-    } else {
-      this.message = "Usuário ou senha inválido"
-      this.isSignedFailed = true
-    }
+  login(login: Login) {
+    this.loginService.authenticate(login, () => {
+      if(this.authenticated()) {
+        this.router.navigateByUrl('/menu')
+      } else {
+        this.message = "Usuário ou senha inválido"
+      }
+    })
+  }
+
+  authenticated(): boolean {
+    return this.loginService.authenticated
   }
 
 }

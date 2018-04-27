@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { Menu, MenuItem } from './menu.model';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,9 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
-
   ngOnInit() {
+    
   }
 
 }

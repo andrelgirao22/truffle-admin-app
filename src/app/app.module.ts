@@ -1,3 +1,4 @@
+import { LoginService } from './login/login.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,6 +16,8 @@ import { MenuComponent } from './menu/menu.component';
 import {LOCALE_ID} from '@angular/core'
 import localePt from '@angular/common/locales/pt'
 import { registerLocaleData } from '@angular/common';
+import { HomeComponent } from './home/home.component';
+import { MenuModule } from './menu/menu.module';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -24,16 +27,18 @@ registerLocaleData(localePt, 'pt-BR');
     CategoryComponent,
     LoginComponent,
     InputComponent,
-    MenuComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES)
+    RouterModule.forRoot(ROUTES),
+    MenuModule
   ],
   providers: [
-    {provide:LOCALE_ID, useValue: "pt-BR" }
+    {provide:LOCALE_ID, useValue: "pt-BR" },
+    LoginService
   ],
   bootstrap: [AppComponent]
 })
