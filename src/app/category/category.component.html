@@ -1,76 +1,76 @@
 
-    <section class="content">
-      <div class="row">
-        <div class="col-md-12 col-xd-12">
-          <div class="box">
-            <div class="box-header with-border">
-              <h3 class="box-title">Categorias</h3>
-            </div>
-            
-            <div class="box-body">
-              <table class="table table-bordered">
-                <tr>
-                  <th style="width: 10px">#</th>
-                  <th>Task</th>
-                  <th>Progress</th>
-                  <th style="width: 40px">Label</th>
-                </tr>
-                <tr>
-                  <td>1.</td>
-                  <td>Update software</td>
-                  <td>
-                    <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-red">55%</span></td>
-                </tr>
-                <tr>
-                  <td>2.</td>
-                  <td>Clean database</td>
-                  <td>
-                    <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-yellow">70%</span></td>
-                </tr>
-                <tr>
-                  <td>3.</td>
-                  <td>Cron job running</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-light-blue">30%</span></td>
-                </tr>
-                <tr>
-                  <td>4.</td>
-                  <td>Fix and squish bugs</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-success" style="width: 90%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-green">90%</span></td>
-                </tr>
-              </table>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix">
-              <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">&raquo;</a></li>
-              </ul>
-            </div>
-          </div>
-        
-        </div>
-       
-        <!-- /.col -->
+
+<div class="row">
+  <div class="col-xs-12 col-md-12">
+    <div class="box">
+      <div class="box-header with-border">
+        <h4 class="box-title">Categorias</h4>
       </div>
-     
+      
+      <div class="box-body">
+        <div *ngIf="categories.length === 0">
+          <p>Não há Categorias criadas</p>
+        </div>
+
+        <a class="btn bg-red float" [routerLink]="['/categoryDetail']">
+          <i class="fa fa-plus my-float"></i> 
+        </a>
+
+        <table class="table table-bordered" *ngIf="categories.length > 0">
+          <tr>
+            <th style="width: 10px">#</th>
+            <th>Descrição</th>
+            <th>Imagem</th>
+            <th>Ações</th>
+          </tr>
+          <tr *ngFor="let category of categories">
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.image }}</td>
+            <td>
+              <div>
+                <button class="btn btn-info" 
+                  [routerLink]="['/categoryDetail', category.id]"><i class="fa fa-pencil"></i></button>
+                <button class="btn btn-danger"  (click)="selecteCategory(category)"
+                   data-toggle="modal" data-target="#myModal"><i class="fa fa-remove"></i></button>
+              </div>
+
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                      <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+                    </div>
+                    <div class="modal-body">
+                      Confirma excluir a categoria <b>{{ category.name }}</b> ?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                      <button type="button" class="btn btn-danger" (click)="deleteCategory()">Confirmar</button>
+                    </div>
+                  </div>
+                </div>
+                </div>
+
+            </td>
+          </tr>
+          
+        </table>
+      </div>
+
+      
+      <!-- /.box-body -->
+      <!--div class="box-footer clearfix">
+        <ul class="pagination pagination-sm no-margin pull-right">
+          <li><a href="#">&laquo;</a></li>
+          <li><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">&raquo;</a></li>
+        </ul>
+      </div-->
+    </div>
+  
+  </div>
+</div>

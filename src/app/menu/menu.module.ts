@@ -1,3 +1,4 @@
+import { CategoryService } from './../category/category.service';
 import { MENU_ROUTES } from './menu.routes';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -13,7 +14,11 @@ import { MenuComponent } from './menu.component';
     MenuComponent
   ],
   exports: [
-    RouterModule
+    //RouterModule,
+    MenuComponent
+  ],
+  providers: [
+    CategoryService
   ]
 })
 export class MenuModule { }

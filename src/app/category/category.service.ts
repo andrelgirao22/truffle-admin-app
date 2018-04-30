@@ -15,17 +15,34 @@ export class CategoryService {
     getCategories(): Observable<Category[]> {
         return this.http.get<Category[]>(this.url)
     }
+
+    getCategory(id: string) {
+        return this.http.get<Category>(`${this.url}/${id}`)
+    }
       
     getImage(imageUrl: string) {
         let uri = `${this.url}/${imageUrl}/image`
         return this.http.get(uri)
     }
 
-    addCategory(category: Category) {
+    addCategory(category: any) {
 
         let httpOptions = this.getHttpOptions()
         console.log(`${this.url}`)
-        return  this.http.post<Category>(`${this.url}`, JSON.stringify(category), httpOptions)
+        if(category.id) {
+            return  this.http.put<Category>(`${this.url}/${category.id}`, JSON.stringify(category), httpOptions)
+        } else {
+            return  this.http.post<Category>(`${this.url}`, JSON.stringify(category), httpOptions)
+        }
+    }
+
+    delete(id: number) {
+        let httpOptions = this.getHttpOptions()
+        return this.http.delete<Category>(`${this.url}/${id}`, httpOptions) 
+    }
+
+    sendImage(file: any, id: string) {
+        return this.http.post(`${this.url}/image/${id}`, file)
     }
 
     setCategory(category: Category) {
@@ -37,7 +54,9 @@ export class CategoryService {
 
         let httpOptions = {
             headers: new HttpHeaders({
-              'Content-Type':  'application/json',
+            'Content-Type': 'application/json',
+            //'Content-Type': 'multipart/form-data',
+            //'Content-Type': 'false',
               //'Authorization': 'my-auth-token'
             })
         }

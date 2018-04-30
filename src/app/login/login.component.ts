@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   login(login: Login) {
     this.loginService.authenticate(login, () => {
       if(this.authenticated()) {
-        this.router.navigateByUrl('/menu')
+        this.router.navigateByUrl('/home')
       } else {
         this.message = "Usuário ou senha inválido"
       }
