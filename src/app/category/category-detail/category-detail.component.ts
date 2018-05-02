@@ -3,7 +3,7 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Category } from './../category.model';
 import { CategoryService } from './../category.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
 
@@ -23,6 +23,7 @@ export class CategoryDetailComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private activedRouter: ActivatedRoute,
+    private router: Router,
     private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
@@ -64,7 +65,7 @@ export class CategoryDetailComponent implements OnInit {
 
     this.categoryService.sendImage(fd, category.id + "").subscribe(res => {
       this.categoryService.addCategory(category).subscribe(data => {
-        console.log(data)
+        this.router.navigate(['/category'])
       })
     })
   }

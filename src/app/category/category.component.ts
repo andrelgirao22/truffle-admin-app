@@ -12,9 +12,16 @@ export class CategoryComponent implements OnInit {
   categories: Category[] = []
   categorySelected: Category
 
+  snackbarMessage: string = 'Categoria excluida com sucesso'
+  snackVisibility: string = 'hidden'
+
   constructor(private categoryService: CategoryService) { }
 
   ngOnInit() {
+    this.loadCategories()
+  }
+
+  loadCategories() {
     this.categoryService.getCategories().subscribe(_categories => {
       if(_categories) {
         this.categories = _categories
@@ -30,8 +37,13 @@ export class CategoryComponent implements OnInit {
     console.log(this.categorySelected)
     this.categoryService.delete(this.categorySelected.id).subscribe(res => {
       console.log(res)
-      this.categorySelected = null
+      this.snackbarVisibilityState()
+      this.loadCategories()
     })
+  }
+
+  snackbarVisibilityState() {
+    this.snackVisibility = this.snackVisibility === 'hidden' ? 'visible': 'hidden'
   }
 
 }

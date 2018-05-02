@@ -16,6 +16,11 @@
           <i class="fa fa-plus my-float"></i> 
         </a>
 
+        <truffle-adm-snackbar
+          [snackbarMessage]="snackbarMessage"
+          [snackVisibility]="snackVisibility">
+        </truffle-adm-snackbar>
+
         <table class="table table-bordered" *ngIf="categories.length > 0">
           <tr>
             <th style="width: 10px">#</th>
@@ -43,15 +48,17 @@
                       <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
                     </div>
                     <div class="modal-body">
-                      Confirma excluir a categoria <b>{{ category.name }}</b> ?
+                      Confirma excluir a categoria <b>{{ categorySelected?.name }}</b> ?
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                      <button type="button" class="btn btn-danger" (click)="deleteCategory()">Confirmar</button>
+                      <button type="button" class="btn btn-danger" (click)="deleteCategory()" data-dismiss="modal">Confirmar</button>
                     </div>
                   </div>
                 </div>
                 </div>
+
+               
 
             </td>
           </tr>
