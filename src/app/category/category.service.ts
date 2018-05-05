@@ -1,3 +1,4 @@
+import { NotificationService } from './../shared/messages/notification.service';
 
 import { Category } from './category.model';
 import { Observable } from 'rxjs/Observable';
@@ -10,7 +11,9 @@ export class CategoryService {
 
     url:string = `${TRUFFLE_API}/category`
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private notificationService: NotificationService) {}
 
     getCategories(): Observable<Category[]> {
         return this.http.get<Category[]>(this.url)

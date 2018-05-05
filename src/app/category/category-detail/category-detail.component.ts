@@ -1,3 +1,4 @@
+import { NotificationService } from './../../shared/messages/notification.service';
 import { TRUFFLE_API } from './../../truffle.adm.api';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Category } from './../category.model';
@@ -22,6 +23,7 @@ export class CategoryDetailComponent implements OnInit {
 
   constructor(
     private categoryService: CategoryService,
+    private notificationService: NotificationService,
     private activedRouter: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer) { }
@@ -66,6 +68,8 @@ export class CategoryDetailComponent implements OnInit {
     this.categoryService.sendImage(fd, category.id + "").subscribe(res => {
       this.categoryService.addCategory(category).subscribe(data => {
         this.router.navigate(['/category'])
+        let text = category.id ? "alterada" : "incluida" 
+        this.notificationService.notify(`Categoria  ${category.name} ${text} com sucesso`)
       })
     })
   }

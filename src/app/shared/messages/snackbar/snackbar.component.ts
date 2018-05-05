@@ -1,5 +1,11 @@
+import { NotificationService } from './../notification.service';
 import { Component, OnInit, Input } from '@angular/core';
 import {trigger, state, style, transition, animate} from '@angular/animations'
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/timer'
+import 'rxjs/add/operator/do'
+import 'rxjs/add/operator/switchMap'
 
 @Component({
   selector: 'truffle-adm-snackbar',
@@ -23,15 +29,19 @@ import {trigger, state, style, transition, animate} from '@angular/animations'
 export class SnackbarComponent implements OnInit {
 
   message: string = ''
-  visibility: string = 'hidden'
-  @Input() snackVisibility: string
-  @Input() snackbarMessage: string
-
-  constructor() { }
+  snackVisibility: string = 'hidden'
+  
+  constructor(private notificationService: NotificationService) { }
 
   ngOnInit() {
-    this.message = this.snackbarMessage
-    this.visibility = this.snackVisibility
+    this.notificationService.notifier
+      .do(message => {
+        this.message = message
+        this.snackVisibility = 'visible'
+        
+    }).switchMap(message => Observable.timer(3000))
+      .subscribe(timer => this.snackVisibility = 'hidden')
+    
   }
 
 }

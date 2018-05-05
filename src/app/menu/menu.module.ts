@@ -4,21 +4,19 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from './menu.component';
+import { ItemService } from '../item/item.service';
 
 @NgModule({
   imports: [
-    CommonModule,
-    RouterModule.forChild(MENU_ROUTES)
+    CommonModule
+    //RouterModule.forChild(MENU_ROUTES)
   ],
   declarations: [
     MenuComponent
   ],
   exports: [
-    //RouterModule,
     MenuComponent
   ],
-  providers: [
-    CategoryService
-  ]
+  providers: []
 })
 export class MenuModule { }

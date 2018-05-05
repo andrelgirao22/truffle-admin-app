@@ -1,6 +1,7 @@
+import { Component, OnInit } from '@angular/core';
+import { NotificationService } from './../shared/messages/notification.service';
 import { Category } from './category.model';
 import { CategoryService } from './category.service';
-import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'truffle-adm-category',
@@ -12,10 +13,9 @@ export class CategoryComponent implements OnInit {
   categories: Category[] = []
   categorySelected: Category
 
-  snackbarMessage: string = 'Categoria excluida com sucesso'
-  snackVisibility: string = 'hidden'
-
-  constructor(private categoryService: CategoryService) { }
+  constructor(
+      private categoryService: CategoryService,
+      private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.loadCategories()
@@ -25,6 +25,7 @@ export class CategoryComponent implements OnInit {
     this.categoryService.getCategories().subscribe(_categories => {
       if(_categories) {
         this.categories = _categories
+        console.log(this.categories)
       }
     })
   }
@@ -37,13 +38,9 @@ export class CategoryComponent implements OnInit {
     console.log(this.categorySelected)
     this.categoryService.delete(this.categorySelected.id).subscribe(res => {
       console.log(res)
-      this.snackbarVisibilityState()
       this.loadCategories()
+      this.notificationService.notify(`Categoria excluida com sucesso ${this.categorySelected.name}`)
     })
-  }
-
-  snackbarVisibilityState() {
-    this.snackVisibility = this.snackVisibility === 'hidden' ? 'visible': 'hidden'
   }
 
 }

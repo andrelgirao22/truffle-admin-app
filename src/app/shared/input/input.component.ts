@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ContentChild, AfterContentInit } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { NgModel, FormControlName, FormGroupName } from '@angular/forms';
 
 @Component({
   selector: 'truffle-adm-input',
@@ -13,6 +13,8 @@ export class InputComponent implements OnInit, AfterContentInit {
   input: any
 
   @ContentChild(NgModel) model: NgModel
+  @ContentChild(FormControlName) control: FormControlName
+  @ContentChild(FormGroupName) group: FormGroupName
 
   constructor() { }
 
@@ -20,9 +22,9 @@ export class InputComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit() {
-    this.input = this.model
+    this.input = this.model || this.control || this.group
     if(this.input === undefined) {
-      throw new Error("Este componente precisa ser usado com uma diretiva NgModel")
+      throw new Error("Este componente precisa ser usado com uma diretiva NgModel ou FormControlName ou FormGroupName")
     }
   }
 

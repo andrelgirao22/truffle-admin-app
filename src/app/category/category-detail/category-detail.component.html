@@ -1,38 +1,41 @@
 
-<div class="container">
+
   
-  <form #form="ngForm" novalidate>
-   
-    <div class="row invoice-info">
-        <div class="col-xs-12">
-          <p class="lead">Dados:</p>
-        </div>
-        <div class="col-sm-12 col-xs-12">
-          <truffle-adm-input label="Descrição" errorMessage="Campo Obrigatório (informe um mínimo de 3 caracteres)" [noHelpBlock]="true">
-              <input type="text" class="form-control" name="name" placeholder="Descrição" 
-                    [(ngModel)]="category.name" required autocomplete="off" minlength="3">
-          </truffle-adm-input>
+  <section class="content">
+    <section class="invoice">
+      
+      <form #form="ngForm" novalidate>
+      
+        <div class="row invoice-info">
+            <div class="col-xs-12">
+              <p class="lead">Dados:</p>
+            </div>
+            <div class="col-sm-12 col-xs-12">
+              <truffle-adm-input label="Descrição" errorMessage="Campo Obrigatório (informe um mínimo de 3 caracteres)" [noHelpBlock]="true">
+                  <input type="text" class="form-control" name="name" placeholder="Descrição" 
+                        [(ngModel)]="category.name" required autocomplete="off" minlength="3">
+              </truffle-adm-input>
 
-          <truffle-adm-input label="Imagem" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
-              <label for="exampleInputFile">Imagem</label>
-              <input type="file" (change)="onFileSelected($event)" name="image" placeholder="Imagem" ngModel autocomplete="off">
-          </truffle-adm-input>
+              <truffle-adm-input label="Imagem" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
+                  <label for="exampleInputFile">Imagem</label>
+                  <input type="file" (change)="onFileSelected($event)" name="image" placeholder="Imagem" ngModel autocomplete="off">
+              </truffle-adm-input>
 
-          <div *ngIf="imageSelected">
-            <img [src]="imageSelected" width="200px">
-          </div>
+              <div *ngIf="imageSelected">
+                <img [src]="imageSelected" width="200px">
+              </div>
 
-        </div>
+            </div>
+            
         
-     
-        <div class="col-xs-4  pull-right">
-            <button class="btn btn-primary btn-block"
-                    (click)="saveCategory(form.value)"
-                    [disabled]="!form.valid">Gravar</button>
-        </div>
-  </div>
+            <div class="col-xs-2  pull-left">
+                <button class="btn btn-primary btn-block"
+                        (click)="saveCategory(form.value)"
+                        [disabled]="!form.valid">Gravar</button>
+            </div>
+      </div>
 
-  </form>
+      </form>
 
-
-</div>
+</section>
+</section>
