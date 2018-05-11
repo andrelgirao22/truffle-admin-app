@@ -1,4 +1,4 @@
-import { NotificationService } from './../../shared/messages/notification.service';
+import { state } from '@angular/animations';
 import { Category } from './../../category/category.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -35,42 +35,47 @@ export class ItemDetailComponent implements OnInit {
   constructor(
     private itemService: ItemService,
     private categoryService: CategoryService,
-    private notificationService: NotificationService,
     private activedRouter: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer,
     private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.setupForm()
     this.loadCategories()
     this.loadItem()
     this.loadPriceTypes()
+    this.setupForm()
   }
 
   setupForm() {
     this.itemForm = this.formBuilder.group({
-      name: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
+      name: this.formBuilder.control(this.item.name, [Validators.required, Validators.minLength(5)]),
       description: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       category: this.formBuilder.control('', [Validators.required]),
-      /*category: this.formBuilder.group({
-        name: this.formBuilder.control('')
-      }),*/
       image: this.formBuilder.control('')
     })
   }
 
   loadItem() {
     let id: string = this.activedRouter.snapshot.params['id']
-    
+    console.log(id)
     if(id) {
       this.itemService.getItem(id).subscribe(res => {
 
-       this.item.id = res.id
-       this.item.name = res.name
-       this.item.description = res.description
-       this.item.image = res.image
-       
+        this.itemForm.patchValue({
+          name: res.name,
+          description: res.description,
+          category: `${res.category.id} - ${res.category.name}` 
+        })
+        
+        this.selectCategory(`${res.category.id} - ${res.category.name}`)
+
+        this.item.id = res.id
+        this.item.name = res.name
+        this.item.description = res.description
+        this.item.image = res.image
+        this.item.prices = res.prices
+        this.item.status = res.status
         this.itemService.getImage(this.item.image).subscribe((data: any) => {
           if(data) {
             this.imageSelected = this.sanitizer.bypassSecurityTrustUrl(this.imageType + data.image)
@@ -83,8 +88,6 @@ export class ItemDetailComponent implements OnInit {
 
   loadCategories() {
     this.categoryService.getCategories().subscribe(_categories => {
-      
-      console.log(_categories)
       this.categories = _categories
     }, error => console.log(error))
   }
@@ -100,6 +103,7 @@ export class ItemDetailComponent implements OnInit {
 
     let item = new Item()
     item.id = this.item.id
+    item.status = "PENDENTE"
     item.name = form.name
     item.description = form.description
     item.category = this.categorySelected
@@ -115,10 +119,11 @@ export class ItemDetailComponent implements OnInit {
     fd.append('file', this.selectedFile)
 
     this.itemService.sendImage(fd, item.id + "").subscribe(res => {
-      console.log(item)
+      
       this.itemService.addItem(item).subscribe(data => {
         this.router.navigate(['/item'])
-        this.notificationService.notify(`Item ${this.item.description} incluido com sucesso`)
+        let msg: string = this.item.id ? "alterado" : "incluído"
+        this.itemService.setMessage(`Item ${item.description} ${msg} com sucesso`)
       })
     })
 
@@ -126,7 +131,6 @@ export class ItemDetailComponent implements OnInit {
 
   addPrice(formPrice: any) {
     
-    console.log(formPrice)
     let price = new Price()
     price.typePrice = formPrice.priceType
     price.price = formPrice.price

@@ -13,5 +13,6 @@ export class Item {
     prices: Price[] = []
     notes: Note[] = []
     note: number
+    status: string
 
 }

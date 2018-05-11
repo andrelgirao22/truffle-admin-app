@@ -14,9 +14,6 @@ export class ItemComponent implements OnInit {
   errorMessage: string
   itemSelected: Item
 
-  snackbarMessage: string = 'Item excluido com sucesso'
-  snackVisibility: string = 'hidden'
-
   constructor(private itemService: ItemService) { }
 
   ngOnInit() {
@@ -27,11 +24,10 @@ export class ItemComponent implements OnInit {
     this.itemService.getItens().subscribe(_itens => {
       this.itens = _itens
       console.log(this.itens)
-      //this.loading = false
     },
-  error => { 
-    console.log(error)
-  })
+    error => { 
+      console.log(error)
+    })
   }
 
   select(item: Item) {
@@ -42,13 +38,19 @@ export class ItemComponent implements OnInit {
     console.log(this.itemSelected)
     this.itemService.delete(this.itemSelected.id).subscribe(res => {
       console.log(res)
-      this.snackbarVisibilityState()
       this.loadItens()
     })
   }
 
-  snackbarVisibilityState() {
-    this.snackVisibility = this.snackVisibility === 'hidden' ? 'visible': 'hidden'
+  setStatus(item: Item) {
+    item.status = item.status === 'PUBLICADO' ? "PENDENTE" : "PUBLICADO"
+    this.itemService.addItem(item).subscribe(res => {
+      this.itemService.setMessage(`Status do item mudou para ${item.status}`)
+    }, 
+    error => {
+
+   })
+    
   }
 
 }

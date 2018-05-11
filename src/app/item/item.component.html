@@ -30,9 +30,16 @@
             <td>{{ item.name }}</td>
             <td>{{ item.description }}</td>
             <td>{{ item.image }}</td>
-            <td>{{ item.status }}</td>
+            <td>
+              <div class="box-tools pull-center">
+                  <span class="label" 
+                        [class.label-success]="item.status === 'PUBLICADO' " 
+                        [class.label-danger]="item.status === 'PENDENTE'">{{ item.status }}</span>
+              </div>
+            </td>
             <td>
               <div>
+                <button class="btn btn-info" (click)="setStatus(item)"><i class="fa fa-exchange"></i></button>
                 <button class="btn btn-info" 
                   [routerLink]="['/itemDetail', item.id]"><i class="fa fa-pencil"></i></button>
                 <button class="btn btn-danger"  (click)="select(item)"

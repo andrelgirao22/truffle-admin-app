@@ -1,4 +1,8 @@
 
+<section class="content">
+
+
+
 <div class="login-box">
   <div class="login-logo">
     <a href="../../index2.html"><b>Truffle App</b>Admin</a>
@@ -7,15 +11,15 @@
   <div class="login-box-body">
     <p class="login-box-msg">Acesso ao sistema</p>
     
-    <form #form="ngForm" novalidate>
+    <form [formGroup]="loginForm" novalidate>
       
       <truffle-adm-input label="Usuário" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
-          <input type="text" class="form-control" name="username" placeholder="Usuário" ngModel required autocomplete="off">
+          <input type="text" class="form-control" formControlName="email" placeholder="Usuário" autocomplete="off">
           <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </truffle-adm-input>
 
       <truffle-adm-input label="Senha" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
-          <input type="password" class="form-control" name="password" ngModel placeholder="Senha" required>
+          <input type="password" class="form-control" formControlName="password" placeholder="Senha">
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </truffle-adm-input>
       
@@ -28,8 +32,8 @@
         
         <div class="col-xs-12">
           <button class="btn btn-primary btn-block btn-flat"
-                  (click)="login(form.value)"
-                  [disabled]="!form.valid">Entrar</button>
+                  (click)="login()"
+                  [disabled]="loginForm.invalid">Entrar</button>
         </div>
         
       </div>
@@ -46,3 +50,4 @@
   </div>
   
 </div>
+</section>

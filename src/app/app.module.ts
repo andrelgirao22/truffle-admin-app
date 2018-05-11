@@ -28,6 +28,8 @@ import { ItemComponent } from './item/item.component';
 import { ItemDetailComponent } from './item/item-detail/item-detail.component';
 import { InputComponent } from './shared/input/input.component';
 import { SnackbarComponent } from './shared/messages/snackbar/snackbar.component';
+import { OrderComponent } from './order/order.component';
+import { AccountComponent } from './account/account.component';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -42,7 +44,9 @@ registerLocaleData(localePt, 'pt-BR');
     ItemDetailComponent,
     InputComponent,
     ModalComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    OrderComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,

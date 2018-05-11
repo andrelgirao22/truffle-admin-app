@@ -23,11 +23,15 @@ export class MenuComponent implements OnInit {
   }
 
   autenticated(): boolean {
-    return this.loginService.authenticated
+    return this.loginService.isLoggedIn()
   }
 
   navigateTo(menuItem: MenuItem) {
     this.router.navigateByUrl(menuItem.link)
+  }
+
+  login() {
+    this.router.navigateByUrl('/login')
   }
 
   logout() {

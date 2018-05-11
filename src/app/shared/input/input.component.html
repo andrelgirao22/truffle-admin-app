@@ -8,10 +8,10 @@
   <ng-content></ng-content>
  
   <span class="help-block"
-    *ngIf="hasSuccess()"><i class="fa fa-check">Ok</i>
+    *ngIf="noHelpBlock && hasSuccess()"><i class="fa fa-check">Ok</i>
   </span>
 
   <span class="help-block"
-    *ngIf="hasError()"><i class="fa fa-remove">{{ errorMessage }}</i>
+    *ngIf="noHelpBlock && hasError()"><i class="fa fa-remove">{{ errorMessage }}</i>
   </span>
 </div>

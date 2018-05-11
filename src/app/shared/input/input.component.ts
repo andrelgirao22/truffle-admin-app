@@ -29,7 +29,7 @@ export class InputComponent implements OnInit, AfterContentInit {
   }
 
   hasSuccess(): boolean {
-    return this.noHelpBlock && this.input.valid && 
+    return this.input.valid && 
           (this.input.dirty || this.input.touched)
   }
 

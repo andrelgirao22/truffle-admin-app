@@ -3,6 +3,7 @@ import { Item } from './item.model';
 import { Injectable } from "@angular/core";
 import { TRUFFLE_API } from './../truffle.adm.api';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { NotificationService } from '../shared/messages/notification.service';
 
 @Injectable()
 export class ItemService {
@@ -10,7 +11,12 @@ export class ItemService {
     url:string = `${TRUFFLE_API}/item`
 
     constructor(
-        private http: HttpClient) {}
+        private http: HttpClient,
+        private notificationService: NotificationService) {}
+
+    setMessage(message: string) {
+        this.notificationService.notify(message)
+    }
 
     getItens(): Observable<Item[]> {
         return this.http.get<Item[]>(this.url)
