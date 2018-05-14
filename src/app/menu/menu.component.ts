@@ -34,8 +34,8 @@ export class MenuComponent implements OnInit {
     this.router.navigateByUrl('/login')
   }
 
-  logout() {
+  loggout() {
     this.router.navigateByUrl('')
-    this.loginService.authenticated = false
+    this.loginService.loggout()
   }
 }

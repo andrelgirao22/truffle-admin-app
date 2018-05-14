@@ -7,7 +7,7 @@ import { CategoryModule } from './category/category.module';
 import { NotificationService } from './shared/messages/notification.service';
 import { LoginService } from './login/login.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core';
@@ -30,6 +30,7 @@ import { InputComponent } from './shared/input/input.component';
 import { SnackbarComponent } from './shared/messages/snackbar/snackbar.component';
 import { OrderComponent } from './order/order.component';
 import { AccountComponent } from './account/account.component';
+import { TokenInterceptor } from './login/token.interceptor';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -64,7 +65,7 @@ registerLocaleData(localePt, 'pt-BR');
     LoginService,
     CategoryService,
     ItemService,
-    NotificationService
+    NotificationService,
   ],
   bootstrap: [AppComponent]
 })

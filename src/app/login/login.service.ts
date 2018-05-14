@@ -28,6 +28,10 @@ export class LoginService {
     return this.loginAuthenticated !==  undefined
   }
 
+  loggout() {
+    this.loginAuthenticated = undefined
+  }
+
   getLoginAuth() {
     return this.loginAuthenticated
   }
