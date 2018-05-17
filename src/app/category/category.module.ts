@@ -1,3 +1,7 @@
+import { CATEGORY_ROUTES } from './category.router';
+import { SharedModule } from './../shared/shared.module';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 
 import { RouterModule, Routes } from '@angular/router';
@@ -6,16 +10,12 @@ import { CategoryDetailComponent } from './category-detail/category-detail.compo
 import { CategoryComponent } from './category.component';
 import { NgModule } from '@angular/core';
 
-const ROUTES: Routes = [
-    /*{path :'category', component: CategoryComponent},
-    {path: 'categoryDetail', component: CategoryDetailComponent},
-    {path: 'categoryDetail/:id', component: CategoryDetailComponent},*/
-]
-
 @NgModule({
   imports: [
     CommonModule,
-    //RouterModule.forChild(ROUTES)
+    FormsModule,
+    SharedModule,
+    RouterModule.forChild(CATEGORY_ROUTES)
   ],
   declarations: [
     CategoryComponent,
@@ -23,7 +23,8 @@ const ROUTES: Routes = [
   ],
   exports: [
     CategoryComponent,
-    CategoryDetailComponent
+    CategoryDetailComponent,
+    RouterModule
   ],
   providers: [
     CategoryService

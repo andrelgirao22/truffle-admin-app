@@ -22,8 +22,12 @@ export class CategoryService {
     }
 
     getHeaders() {
+        let token = ""
+        if(this.loginService.getLoginAuth()) {
+            token = this.loginService.getLoginAuth().access_token
+        }
         return new HttpHeaders()
-            .set('Authorization','Bearer ' + this.loginService.getLoginAuth().access_token)
+            .set('Authorization','Bearer ' + token)
             .set('Content-Type', 'application/json')
     }
 

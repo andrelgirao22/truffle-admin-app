@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { TRUFFLE_API } from '../truffle.adm.api';
 
 import 'rxjs/add/operator/do'
+import { Router } from '@angular/router';
 
 @Injectable()
 export class LoginService {
@@ -15,13 +16,19 @@ export class LoginService {
 
   loginAuthenticated: Login
 
-  constructor(private http:HttpClient) { }
+  constructor(
+      private http:HttpClient,
+      private router: Router) { }
   
   login(email: string, password: string): Observable<Login> {
     return this.http.post<Login>(`${this.url}/auth/login`, {username: email, password: password})
       .do(user => {
         this.loginAuthenticated = user
       })
+  }
+
+  handleLogin() {
+    this.router.navigate(['/login'])
   }
 
   isLoggedIn(): boolean {
