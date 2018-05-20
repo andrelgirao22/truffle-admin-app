@@ -10,14 +10,15 @@ import { LoginService } from '../login/login.service';
 @Injectable()
 export class CategoryService {
 
-    url:string = `${TRUFFLE_API}/category`
+    url:string = `${TRUFFLE_API}/category/page`
 
     constructor(
         private http: HttpClient,
         private loginService: LoginService,
         private notificationService: NotificationService) {}
 
-    getCategories(): Observable<Category[]> {
+    getCategories(parameters: string): Observable<any> {
+        if(parameters) this.url += `${this.url}/${parameters}` 
         return this.http.get<Category[]>(this.url, {headers: this.getHeaders()})
     }
 
