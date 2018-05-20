@@ -68,7 +68,8 @@ export class CategoryDetailComponent implements OnInit {
     this.categoryService.sendImage(fd, category.id + "").subscribe(res => {
       this.categoryService.addCategory(category).subscribe(data => {
         this.router.navigate(['/category'])
-        let text = category.id ? "alterada" : "incluida" 
+        let text = category.id ? "alterada" : "incluida"
+        console.log(this.notificationService) 
         this.notificationService.notify(`Categoria  ${category.name} ${text} com sucesso`)
       })
     })

@@ -1,7 +1,4 @@
-import { CATEGORY_ROUTES } from './category.router';
 import { SharedModule } from './../shared/shared.module';
-import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 
 import { RouterModule, Routes } from '@angular/router';
@@ -10,10 +7,15 @@ import { CategoryDetailComponent } from './category-detail/category-detail.compo
 import { CategoryComponent } from './category.component';
 import { NgModule } from '@angular/core';
 
+export const CATEGORY_ROUTES: Routes = [    
+  {path: '', component: CategoryComponent },
+  {path: 'categoryDetail', component: CategoryDetailComponent},
+  {path: 'categoryDetail/:id', component: CategoryDetailComponent}
+]
+
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
     SharedModule,
     RouterModule.forChild(CATEGORY_ROUTES)
   ],
@@ -23,11 +25,7 @@ import { NgModule } from '@angular/core';
   ],
   exports: [
     CategoryComponent,
-    CategoryDetailComponent,
-    RouterModule
-  ],
-  providers: [
-    CategoryService
+    CategoryDetailComponent
   ]
 })
 export class CategoryModule { }

@@ -13,8 +13,7 @@ export const ROUTES: Routes = [
     
     {path: '', component: HomeComponent},
     {path: 'home', component: HomeComponent},
-    {path: 'login/:to', component: LoginComponent},
-    {path: 'login', component: LoginComponent},
+    {path: 'login', loadChildren: './login/login.module#LoginModule'},
     {path: 'category', loadChildren: './category/category.module#CategoryModule'},
     {path: 'item', component: ItemComponent, canLoad: [LoggedInGuard]},
     {path: 'itemDetail', component: ItemDetailComponent, canLoad: [LoggedInGuard]},

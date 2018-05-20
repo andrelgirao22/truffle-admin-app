@@ -1,5 +1,5 @@
+import { NotificationService } from '../shared/messages/notification.service';
 import { Component, OnInit } from '@angular/core';
-import { NotificationService } from './../shared/messages/notification.service';
 import { Category } from './category.model';
 import { CategoryService } from './category.service';
 
@@ -35,11 +35,9 @@ export class CategoryComponent implements OnInit {
   }
 
   deleteCategory() {
-    console.log(this.categorySelected)
     this.categoryService.delete(this.categorySelected.id).subscribe(res => {
-      console.log(res)
-      this.loadCategories()
       this.notificationService.notify(`Categoria excluida com sucesso ${this.categorySelected.name}`)
+      this.loadCategories()
     })
   }
 
