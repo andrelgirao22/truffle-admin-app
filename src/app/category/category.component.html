@@ -70,9 +70,9 @@
         <div class="box-footer clearfix">
           Paginas
           <ul class="pagination pagination-sm no-margin pull-right">
-            <li><a *ngIf="!isFirstPage" (click)="fisrtPage()">&laquo;</a></li>
+            <li><a (click)="firstPage()">&laquo;</a></li>
             <li *ngFor="let page of getTotalPages()"><a (click)="loadPage(page)">{{ page }}</a></li>
-            <li><a *ngIf="!isLastPage" (click)="lastPage()">&raquo;</a></li>
+            <li><a (click)="lastPage()">&raquo;</a></li>
           </ul>
         </div>
       </div>

@@ -10,7 +10,8 @@ import { LoginService } from '../login/login.service';
 @Injectable()
 export class CategoryService {
 
-    url:string = `${TRUFFLE_API}/category/page`
+    urlCategoryPage:string = `${TRUFFLE_API}/category/page`
+    urlCategory:string = `${TRUFFLE_API}/category`
 
     constructor(
         private http: HttpClient,
@@ -18,8 +19,10 @@ export class CategoryService {
         private notificationService: NotificationService) {}
 
     getCategories(parameters: string): Observable<any> {
-        if(parameters) this.url += `${this.url}/${parameters}` 
-        return this.http.get<Category[]>(this.url, {headers: this.getHeaders()})
+        let url = this.urlCategoryPage
+        if(parameters) url += `${parameters}` 
+        console.log(url)
+        return this.http.get<Category[]>(url, {headers: this.getHeaders()})
     }
 
     getHeaders() {
@@ -33,36 +36,36 @@ export class CategoryService {
     }
 
     getCategory(id: string) {
-        return this.http.get<Category>(`${this.url}/${id}`, {headers: this.getHeaders()})
+        return this.http.get<Category>(`${this.urlCategory}/${id}`, {headers: this.getHeaders()})
     }
       
     getImage(imageUrl: string) {
-        let uri = `${this.url}/${imageUrl}/image`
+        let uri = `${this.urlCategory}/${imageUrl}/image`
         return this.http.get(uri, {headers: this.getHeaders()})
     }
 
     addCategory(category: any) {
 
-        console.log(`${this.url}`)
+        console.log(`${this.urlCategory}`)
         if(category.id) {
-            return  this.http.put<Category>(`${this.url}/${category.id}`, JSON.stringify(category), {headers: this.getHeaders()})
+            return  this.http.put<Category>(`${this.urlCategory}/${category.id}`, JSON.stringify(category), {headers: this.getHeaders()})
         } else {
-            return  this.http.post<Category>(`${this.url}`, JSON.stringify(category), {headers: this.getHeaders()})
+            return  this.http.post<Category>(`${this.urlCategory}`, JSON.stringify(category), {headers: this.getHeaders()})
         }
     }
 
     delete(id: number) {
         
-        return this.http.delete<Category>(`${this.url}/${id}`, {headers: this.getHeaders()}) 
+        return this.http.delete<Category>(`${this.urlCategory}/${id}`, {headers: this.getHeaders()}) 
     }
 
     sendImage(file: any, id: string) {
-        return this.http.post(`${this.url}/image/${id}`, file, {headers: this.getHeaders()})
+        return this.http.post(`${this.urlCategory}/image/${id}`, file, {headers: this.getHeaders()})
     }
 
     setCategory(category: Category) {
         
-        return this.http.put<Category>(`${this.url}`, JSON.stringify(category), {headers: this.getHeaders()})
+        return this.http.put<Category>(`${this.urlCategory}`, JSON.stringify(category), {headers: this.getHeaders()})
     }
 
    /* getHttpOptions(): any {

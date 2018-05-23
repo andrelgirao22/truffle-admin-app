@@ -53,18 +53,20 @@ export class CategoryComponent implements OnInit {
   }
 
   loadPage(page: any) {
-    if(page < this.totalPages) {
-      this.loadCategories(`&page=${page}`)
+    let pageSelected = page - 1
+    console.log(pageSelected)
+    if(page <= this.totalPages) {
+      this.loadCategories(`?page=${pageSelected}`)
     }
   }
 
   firstPage() {
-    this.loadCategories(`&page=0`)
+    this.loadCategories(`?page=0`)
   }
 
   lastPage() {
     let lastPage = this.totalPages - 1
-    this.loadCategories(`&page=${lastPage}`)  
+    this.loadCategories(`?page=${lastPage}`)  
   }
 
   selecteCategory(category: Category) {
