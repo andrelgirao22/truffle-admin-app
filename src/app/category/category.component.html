@@ -1,12 +1,8 @@
-
 <section class="content-header">
-    <h1>
-     Categorias 
-    </h1>
+    <h1>Categorias </h1>
 </section>
 
 <section class="content">
-  <div class="row">
     <div class="col-xs-12 col-md-12">
       <div class="box">
         <div class="box-header with-border">
@@ -58,25 +54,16 @@
                     </div>
                   </div>
                 </div>
-
-                
-
               </td>
             </tr>
             
           </table>
         </div>
 
-        <div class="box-footer clearfix">
-          Paginas
-          <ul class="pagination pagination-sm no-margin pull-right">
-            <li><a (click)="firstPage()">&laquo;</a></li>
-            <li *ngFor="let page of getTotalPages()"><a (click)="loadPage(page)">{{ page }}</a></li>
-            <li><a (click)="lastPage()">&raquo;</a></li>
-          </ul>
-        </div>
-      </div>
-    
+        <truffle-adm-pagination 
+          [page]="getPage()" 
+          (load)="loadCategories($event)">
+        </truffle-adm-pagination>
+      </div>    
     </div>
-  </div>
 </section>

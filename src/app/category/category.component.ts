@@ -14,59 +14,26 @@ export class CategoryComponent implements OnInit {
   categories: Category[] = []
   categorySelected: Category
 
-  size: number
-  totalElements: number
-  totalPages: number
-  isFirstPage: boolean
-  isLastPage: boolean
+  page: any
 
   constructor(
       private categoryService: CategoryService,
       private notificationService: NotificationService) { }
 
   ngOnInit() {
-    this.loadCategories("")
   }
 
   loadCategories(parameters: string) {
     this.categoryService.getCategories(parameters).subscribe(_page => {
       if(_page) {
-        console.log(_page)
+        this.page = _page
         this.categories = _page.content
-        this.isFirstPage = _page.first
-        this.isLastPage = _page.last
-        this.totalElements = _page.totalElements
-        this.totalPages = _page.totalPages
-        console.log(this.categories)
       }
     })
   }
 
-  getTotalPages() {
-    let page: string[] = []
-    if(this.totalPages) {
-      for(let i = 0; i < this.totalPages; i++) {
-        page.push((i + 1) + "")
-      }
-    }
-    return page
-  }
-
-  loadPage(page: any) {
-    let pageSelected = page - 1
-    console.log(pageSelected)
-    if(page <= this.totalPages) {
-      this.loadCategories(`?page=${pageSelected}`)
-    }
-  }
-
-  firstPage() {
-    this.loadCategories(`?page=0`)
-  }
-
-  lastPage() {
-    let lastPage = this.totalPages - 1
-    this.loadCategories(`?page=${lastPage}`)  
+  getPage() {
+    return this.page
   }
 
   selecteCategory(category: Category) {
