@@ -7,6 +7,8 @@ import { Component, OnInit, Output, Input, EventEmitter, AfterContentInit } from
 export class PaginationComponent implements OnInit {
 
   size: number
+  linesPerPage: number [] = [2,10,50,100]
+  linesPerPageSelected: number = 2 
   totalElements: number
   totalPages: number
   isFirstPage: boolean
@@ -18,11 +20,10 @@ export class PaginationComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.load.emit("")
+    this.load.emit(`?linesPerPage=${this.linesPerPageSelected}`)
   }
 
   ngOnChanges() {
-    
     this.loadValues()
   }
 
@@ -36,8 +37,12 @@ export class PaginationComponent implements OnInit {
       console.log(this.totalPages)
       console.log(this.isFirstPage)
       console.log(this.isLastPage)
-
     }
+  }
+
+  linesSelected(event) {
+    this.linesPerPageSelected = event.target.value
+    this.load.emit(`?page=0&linesPerPage=${this.linesPerPageSelected}`)
   }
 
   getTotalPages() {
@@ -54,18 +59,18 @@ export class PaginationComponent implements OnInit {
     let pageSelected = _page - 1
     console.log(pageSelected)
     if(_page <= this.totalPages) {
-      this.load.emit(`?page=${pageSelected}`)
+      this.load.emit(`?page=${pageSelected}&linesPerPage=${this.linesPerPageSelected}`)
     }
   }
 
   firstPage() {
-    this.load.emit(`?page=0`)
+    this.load.emit(`?page=0&linesPerPage=${this.linesPerPageSelected}`)
   }
 
   lastPage() {
     if(this.totalPages) {
       let lastPage = this.totalPages - 1
-      this.load.emit(`?page=${lastPage}`)
+      this.load.emit(`?page=${lastPage}&linesPerPage=${this.linesPerPageSelected}`)
     }
   }
 

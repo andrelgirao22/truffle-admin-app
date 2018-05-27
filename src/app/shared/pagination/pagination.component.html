@@ -1,6 +1,13 @@
 
 <div class="box-footer clearfix">
-  Paginas
+  Linhas por pagina
+
+  <select class="select2 select2-hidden-accessible"
+          tabindex="-1" aria-hidden="true" (change)="linesSelected($event)">
+      <option *ngFor="let lines of linesPerPage" [value]="lines">{{ lines }}</option>
+  </select>  
+
+
   <ul class="pagination pagination-sm no-margin pull-right">
     <li><a (click)="firstPage()">&laquo;</a></li>
     <li *ngFor="let page of getTotalPages()"><a (click)="loadPage(page)">{{ page }}</a></li>
