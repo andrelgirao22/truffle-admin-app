@@ -7,8 +7,8 @@ import { Component, OnInit, Output, Input, EventEmitter, AfterContentInit } from
 export class PaginationComponent implements OnInit {
 
   size: number
-  linesPerPage: number [] = [2,10,50,100]
-  linesPerPageSelected: number = 2 
+  linesPerPage: number [] = [5,10,50,100]
+  linesPerPageSelected: number = 5 
   totalElements: number
   totalPages: number
   isFirstPage: boolean

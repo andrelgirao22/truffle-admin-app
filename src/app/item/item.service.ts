@@ -20,8 +20,13 @@ export class ItemService {
         this.notificationService.notify(message)
     }
 
-    getItens(): Observable<Item[]> {
-        return this.http.get<Item[]>(this.url, {headers: this.getHeaders()})
+    getItens(parameters: string): Observable<any> {
+
+        let url = `${this.url}/page`
+        if(parameters) url += `${parameters}` 
+        console.log(url)
+
+        return this.http.get<Item[]>(`${url}`, {headers: this.getHeaders()})
     }
 
     getPriceType(): Observable<any> {

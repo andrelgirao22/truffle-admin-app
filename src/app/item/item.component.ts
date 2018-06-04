@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ItemComponent implements OnInit {
 
+  page: any
   itens: Item[] = []
   loading: boolean = false
   errorMessage: string
@@ -17,17 +18,22 @@ export class ItemComponent implements OnInit {
   constructor(private itemService: ItemService) { }
 
   ngOnInit() {
-    this.loadItens()
   }
 
-  loadItens() {
-    this.itemService.getItens().subscribe(_itens => {
-      this.itens = _itens
+  loadItens(parameters: string) {
+
+    this.itemService.getItens(parameters).subscribe(_page => {
+      this.page = _page
+      this.itens = _page.content
       console.log(this.itens)
     },
     error => { 
       console.log(error)
     })
+  }
+
+  getPage() {
+    return this.page
   }
 
   select(item: Item) {
@@ -38,7 +44,7 @@ export class ItemComponent implements OnInit {
     console.log(this.itemSelected)
     this.itemService.delete(this.itemSelected.id).subscribe(res => {
       console.log(res)
-      this.loadItens()
+      this.loadItens("")
     })
   }
 

@@ -87,8 +87,8 @@ export class ItemDetailComponent implements OnInit {
   }
 
   loadCategories() {
-    this.categoryService.getCategories("").subscribe(_categories => {
-      this.categories = _categories
+    this.categoryService.getCategories("?orderby=id").subscribe(_categories => {
+      this.categories = _categories.content
     }, error => console.log(error))
   }
 
