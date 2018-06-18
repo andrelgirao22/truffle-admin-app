@@ -1,20 +1,15 @@
 import { NotificationService } from './shared/messages/notification.service';
 import { LoginModule } from './login/login.module';
-import { CategoryService } from './category/category.service';
 import { SharedModule } from './shared/shared.module';
-import { ModalComponent } from './shared/modal/modal.component';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { CategoryModule } from './category/category.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 import { ROUTES } from './app.routes';
-
 import { AppComponent } from './app.component';
-import { MenuComponent } from './menu/menu.component';
 
 import {LOCALE_ID} from '@angular/core'
 import localePt from '@angular/common/locales/pt'
@@ -25,7 +20,6 @@ import { ItemComponent } from './item/item.component';
 import { ItemDetailComponent } from './item/item-detail/item-detail.component';
 import { OrderComponent } from './order/order.component';
 import { AccountComponent } from './account/account.component';
-import { TokenInterceptor } from './login/token.interceptor';
 
 registerLocaleData(localePt, 'pt-BR');
 

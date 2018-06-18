@@ -1,1 +1,3 @@
-export const TRUFFLE_API = "http://localhost:8080"
+export const TRUFFLE_API = {
+    baseUrl: "http://localhost:8080"
+}

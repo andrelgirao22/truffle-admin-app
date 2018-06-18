@@ -9,12 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
+  username: string
+
   menus: Menu[] = [
-    {name: 'Cadastro', itemMenu: [{item: 'Categoria', link: '/category'},{item: 'Item', link: '/item'}]},
-    {name: 'Operacional', itemMenu: [{item: 'Pedidos', link: '/order'}]},
-    {name: 'Sistema', itemMenu: [{item: 'Usuários', link: '/user'}]}
+    {name: 'Cadastro', icon: 'fa fa-database', itemMenu: [
+      {item: 'Categoria', link: '/category',},
+      {item: 'Item', link: '/item'}
+    ]},
+    {name: 'Operacional', icon: 'fa fa-reorder', itemMenu: [
+      {item: 'Pedidos', link: '/order'}
+    ]},
+    {name: 'Sistema', icon: 'fa fa-gear', itemMenu: [
+      {item: 'Usuários', link: '/user'}
+    ]}
   ]
   
+  menuItemSelected: MenuItem
+
   constructor(
     private router: Router,
     private loginService: LoginService) { }
@@ -27,7 +38,8 @@ export class MenuComponent implements OnInit {
   }
 
   navigateTo(menuItem: MenuItem) {
-    this.router.navigateByUrl(menuItem.link)
+    this.menuItemSelected = menuItem
+    //this.router.navigateByUrl(menuItem.link)
   }
 
   login() {
@@ -35,7 +47,8 @@ export class MenuComponent implements OnInit {
   }
 
   loggout() {
+    this.menuItemSelected = undefined
     this.router.navigateByUrl('')
-    this.loginService.loggout()
+    this.loginService.logout()
   }
 }

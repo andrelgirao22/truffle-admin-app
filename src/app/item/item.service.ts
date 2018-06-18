@@ -61,7 +61,7 @@ export class ItemService {
 
     getHeaders() {
         return new HttpHeaders()
-            .set('Authorization','Bearer ' + this.loginService.getLoginAuth().access_token)
+            .set('Authorization','Bearer ' + this.loginService.getLocalStorage().getItem('access_token'))
             .set('Content-Type', 'application/json')
     }
 

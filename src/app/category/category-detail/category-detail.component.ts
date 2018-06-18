@@ -35,13 +35,12 @@ export class CategoryDetailComponent implements OnInit {
 
        this.category.id = res.id
        this.category.name = res.name
-       this.category.image = res.image
        
-        this.categoryService.getImage(res.image).toPromise().then((data: any) =>{
+        /*this.categoryService.getImage(res.image).toPromise().then((data: any) =>{
           if(data) {
             this.imageSelected = this.sanitizer.bypassSecurityTrustUrl(this.imageType + data.image)
           }
-        })
+        })*/
 
       }).catch(error => {
         console.log(error)
@@ -62,6 +61,7 @@ export class CategoryDetailComponent implements OnInit {
       category.image = this.category.image
     }
     
+    console.log(this.selectedFile)
     const fd = new FormData()
     fd.append('file', this.selectedFile)
 

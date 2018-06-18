@@ -1,4 +1,4 @@
-import { LoggedInGuard } from './../login/loggedin.guard';
+import { LoggedInGuard } from './../login/logged.in.guard';
 import { ItemService } from './../item/item.service';
 import { CategoryService } from './../category/category.service';
 import { LoginService } from './../login/login.service';

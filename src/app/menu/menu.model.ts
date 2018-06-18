@@ -8,6 +8,7 @@ class MenuItem {
 class Menu {
 
     name: string
+    icon: string
     itemMenu: MenuItem []
 
 }

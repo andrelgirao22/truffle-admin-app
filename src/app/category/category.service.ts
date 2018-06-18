@@ -27,8 +27,8 @@ export class CategoryService {
 
     getHeaders() {
         let token = ""
-        if(this.loginService.getLoginAuth()) {
-            token = this.loginService.getLoginAuth().access_token
+        if(this.loginService.isLoggedIn()) {
+            token = this.loginService.getLocalStorage().getItem('access_token')
         }
         return new HttpHeaders()
             .set('Authorization','Bearer ' + token)
@@ -38,14 +38,8 @@ export class CategoryService {
     getCategory(id: string) {
         return this.http.get<Category>(`${this.urlCategory}/${id}`, {headers: this.getHeaders()})
     }
-      
-    getImage(imageUrl: string) {
-        let uri = `${this.urlCategory}/${imageUrl}/image`
-        return this.http.get(uri, {headers: this.getHeaders()})
-    }
-
+    
     addCategory(category: any) {
-
         console.log(`${this.urlCategory}`)
         if(category.id) {
             return  this.http.put<Category>(`${this.urlCategory}/${category.id}`, JSON.stringify(category), {headers: this.getHeaders()})
@@ -55,7 +49,6 @@ export class CategoryService {
     }
 
     delete(id: number) {
-        
         return this.http.delete<Category>(`${this.urlCategory}/${id}`, {headers: this.getHeaders()}) 
     }
 
@@ -67,19 +60,4 @@ export class CategoryService {
         
         return this.http.put<Category>(`${this.urlCategory}`, JSON.stringify(category), {headers: this.getHeaders()})
     }
-
-   /* getHttpOptions(): any {
-
-        let token: string = this.loginService.getLoginAuth().access_token
-
-        let httpOptions = {
-            headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-            })
-        }
-
-        return httpOptions
-    }*/
-
 }
