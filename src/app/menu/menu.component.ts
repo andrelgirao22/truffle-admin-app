@@ -33,7 +33,7 @@ export class MenuComponent implements OnInit {
   ngOnInit() {
   }
 
-  autenticated(): boolean {
+  isLoggedIn(): boolean {
     return this.loginService.isLoggedIn()
   }
 

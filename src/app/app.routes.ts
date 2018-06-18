@@ -7,9 +7,8 @@ import { Routes } from '@angular/router';
 
 export const ROUTES: Routes = [
     
-    {path: '', component: HomeComponent},
-    {path: 'home', component: HomeComponent},
-    {path: 'login', loadChildren: './login/login.module#LoginModule', canActivate: [LoggedInGuard]},
+    {path: 'login', loadChildren: './login/login.module#LoginModule'},
+    {path: 'home', component: HomeComponent, canActivate: [LoggedInGuard]},
     {path: 'category', loadChildren: './category/category.module#CategoryModule', canActivate: [LoggedInGuard]},
     {path: 'item', component: ItemComponent, canActivate: [LoggedInGuard]},
     {path: 'itemDetail', component: ItemDetailComponent, canActivate: [LoggedInGuard]},
