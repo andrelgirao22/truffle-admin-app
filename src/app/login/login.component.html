@@ -1,53 +1,51 @@
 
 <section class="content">
 
-
-
-<div class="login-box">
-  <div class="login-logo">
-    <a href="../../index2.html"><b>Truffle App</b>Admin</a>
-  </div>
-  
-  <div class="login-box-body">
-    <p class="login-box-msg">Acesso ao sistema</p>
-    
-    <form [formGroup]="loginForm" novalidate>
-      
-      <truffle-adm-input label="Usuário" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
-          <input type="text" class="form-control" formControlName="email" placeholder="Usuário" autocomplete="off">
-          <span class="glyphicon glyphicon-user form-control-feedback"></span>
-      </truffle-adm-input>
-
-      <truffle-adm-input label="Senha" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
-          <input type="password" class="form-control" formControlName="password" placeholder="Senha">
-          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </truffle-adm-input>
-      
-      <div class="has-error">
-        <span class="help-block" *ngIf="!authenticated()">
-          <i class="fa fa-error">{{ message }}</i>
-        </span>
-      </div>
-      <div class="row">
-        
-        <div class="col-xs-12">
-          <button class="btn btn-primary btn-block btn-flat"
-                  (click)="login()"
-                  [disabled]="loginForm.invalid">Entrar</button>
-        </div>
-        
-      </div>
-    </form>
-
-    <div class="social-auth-links text-center">
-      <p>- OU -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Entrar usando Facebook</a>
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="#"><b>Truffle App</b>Admin</a>
     </div>
     
-    <a href="#">Esqueci a senha</a><br>
-    <a href="register.html" class="text-center">Novo Usuário</a>
+    <div class="login-box-body">
+      <p class="login-box-msg">Acesso ao sistema</p>
+      
+      <form [formGroup]="loginForm" novalidate>
+        
+        <truffle-adm-input label="Usuário" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
+            <input type="text" class="form-control" formControlName="email" placeholder="Usuário" autocomplete="off">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        </truffle-adm-input>
 
+        <truffle-adm-input label="Senha" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
+            <input type="password" class="form-control" formControlName="password" placeholder="Senha">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </truffle-adm-input>
+        
+        <div class="has-error">
+          <span class="help-block" *ngIf="!isLoggedIn()">
+            <i class="fa fa-error">{{ message }}</i>
+          </span>
+        </div>
+        <div class="row">
+          
+          <div class="col-xs-12">
+            <button class="btn btn-primary btn-block btn-flat"
+                    (click)="login()"
+                    [disabled]="loginForm.invalid">Entrar</button>
+          </div>
+          
+        </div>
+      </form>
+
+      <div class="social-auth-links text-center">
+        <p>- OU -</p>
+        <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Entrar usando Facebook</a>
+      </div>
+      
+      <a href="#">Esqueci a senha</a><br>
+      <a href="register.html" class="text-center">Novo Usuário</a>
+
+    </div>
+    
   </div>
-  
-</div>
 </section>

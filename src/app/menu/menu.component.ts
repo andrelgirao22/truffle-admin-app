@@ -13,7 +13,7 @@ export class MenuComponent implements OnInit {
 
   menus: Menu[] = [
     {name: 'Cadastro', icon: 'fa fa-database', itemMenu: [
-      {item: 'Categoria', link: '/category',},
+      {item: 'Categoria', link: '/category'},
       {item: 'Item', link: '/item'}
     ]},
     {name: 'Operacional', icon: 'fa fa-reorder', itemMenu: [
@@ -31,6 +31,13 @@ export class MenuComponent implements OnInit {
     private loginService: LoginService) { }
 
   ngOnInit() {
+    this.loginService.emitterLoggerIn.subscribe(_isLoggerIn => {
+      this.username = this.loginService.getLocalStorage().getItem("username")
+    })
+
+    if(!this.username && this.loginService.isLoggedIn()) {
+      this.username = this.loginService.getLocalStorage().getItem("username")
+    }
   }
 
   isLoggedIn(): boolean {
@@ -39,7 +46,7 @@ export class MenuComponent implements OnInit {
 
   navigateTo(menuItem: MenuItem) {
     this.menuItemSelected = menuItem
-    //this.router.navigateByUrl(menuItem.link)
+    
   }
 
   login() {
@@ -48,7 +55,7 @@ export class MenuComponent implements OnInit {
 
   loggout() {
     this.menuItemSelected = undefined
-    this.router.navigateByUrl('')
     this.loginService.logout()
+    this.router.navigateByUrl('/login')
   }
 }

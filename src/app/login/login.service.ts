@@ -31,7 +31,7 @@ export class LoginService {
     const expiresAt = moment().add(login.expires_in, "seconds")
     localStorage.setItem("username", login.account.email)
     localStorage.setItem("access_token", login.access_token)
-    localStorage.setItem("expires_at", JSON.stringify(login.expires_in.valueOf()))
+    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()))
     this.changeStatus();
     this.emitterLoggerIn.emit(this.isLoggedIn())
   }

@@ -1,3 +1,4 @@
+import { LoggedInGuard } from './login/logged.in.guard';
 import { NotificationService } from './shared/messages/notification.service';
 import { LoginModule } from './login/login.module';
 import { SharedModule } from './shared/shared.module';
@@ -43,7 +44,8 @@ registerLocaleData(localePt, 'pt-BR');
   ],
   providers: [
     {provide:LOCALE_ID, useValue: "pt-BR" },
-    NotificationService
+    NotificationService,
+    LoggedInGuard
   ],
   bootstrap: [AppComponent]
 })

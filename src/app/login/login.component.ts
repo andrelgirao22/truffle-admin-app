@@ -34,9 +34,10 @@ export class LoginComponent implements OnInit {
    this.loginService
     .login(this.loginForm.value.email, this.loginForm.value.password)
     .subscribe(user => {
-      this.notificationService.notify(`Bem vindo ${user.account.name}`) 
+      this.loginService.setSession(user)
       this.message = ""
-      this.router.navigateByUrl('/home')
+      this.router.navigateByUrl('/')
+      this.notificationService.notify(`Bem vindo ${user.account.name}`) 
     },
     error => {
       if(error) {
@@ -46,8 +47,13 @@ export class LoginComponent implements OnInit {
     
   }
 
-  authenticated(): boolean {
+  isLoggedIn(): boolean {
     return this.loginService.isLoggedIn()
+  }
+
+  logout() {
+    this.loginService.logout()
+    this.router.navigate(["/"])
   }
 
 }
