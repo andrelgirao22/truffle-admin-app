@@ -31,7 +31,7 @@ export class CategoryDetailComponent implements OnInit {
   ngOnInit() {
     let id: string = this.activedRouter.snapshot.params['id']
     if(id) {
-      this.categoryService.getCategory(id).toPromise().then(res => {
+      this.categoryService.getCategory(id).subscribe(res => {
 
        this.category.id = res.id
        this.category.name = res.name
@@ -42,10 +42,11 @@ export class CategoryDetailComponent implements OnInit {
           }
         })*/
 
-      }).catch(error => {
+      }, error => {
+        this.router.navigate(['/category'])
+        this.notificationService.notify(`${error.status == 403 ? 'Você não tem permissão para executar esta operção': error.message}`)
         console.log(error)
       })
-      
     }
   }
 

@@ -10,8 +10,8 @@ import { LoginService } from '../login/login.service';
 @Injectable()
 export class CategoryService {
 
-    urlCategoryPage:string = `${TRUFFLE_API}/category/page`
-    urlCategory:string = `${TRUFFLE_API}/category`
+    urlCategoryPage:string = `${TRUFFLE_API.baseUrl}/category/page`
+    urlCategory:string = `${TRUFFLE_API.baseUrl}/category`
 
     constructor(
         private http: HttpClient,

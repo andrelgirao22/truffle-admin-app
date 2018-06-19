@@ -1,3 +1,4 @@
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { element } from 'protractor';
 import { NotificationService } from '../shared/messages/notification.service';
 import { Component, OnInit } from '@angular/core';
@@ -14,13 +15,19 @@ export class CategoryComponent implements OnInit {
   categories: Category[] = []
   categorySelected: Category
 
+  searchForm: FormGroup
+
   page: any
 
   constructor(
       private categoryService: CategoryService,
+      private formBuilder: FormBuilder,
       private notificationService: NotificationService) { }
 
   ngOnInit() {
+    this.searchForm = this.formBuilder.group({
+      search: this.formBuilder.control('', [])
+    })
   }
 
   loadCategories(parameters: string) {
@@ -44,6 +51,9 @@ export class CategoryComponent implements OnInit {
     this.categoryService.delete(this.categorySelected.id).subscribe(res => {
       this.notificationService.notify(`Categoria excluida com sucesso ${this.categorySelected.name}`)
       this.loadCategories("")
+    }, error => {
+      console.log(error)
+      this.notificationService.notify(`${error.status === 403 ? 'Você não tem permissão para executar esta operação.': error.message }`)
     })
   }
 
