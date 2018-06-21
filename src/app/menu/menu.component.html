@@ -1,6 +1,6 @@
 <header class="main-header">
     
-    <a href="javascript:void()" class="logo">
+    <a href="#" class="logo">
       <span class="logo-mini">
           <img src="assets/img/logo_webgex_mini.svg" alt="TruffleApp" width="30">
       </span>
@@ -34,14 +34,14 @@
         <li class="header">Navegação Principal</li>
         <li class="treeview" *ngFor="let menu of menus">
           <a href="#">
-            <i [ngClass]="menu.icon" ></i> <span>{{ menu.name }}</span>
+            <i [ngClass]="menu.icon"></i><span>{{ menu.name }}</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
           <ul class="treeview-menu">
             <li *ngFor="let menuItem of menu.itemMenu" routerLinkActive="active" (click)="navigateTo(menuItem)">
-                <a [routerLink]="menuItem.link">
+                <a [routerLink]="menuItem.link" href="#">
                   <i class="fa fa-circle-o"></i>
                   <span>{{ menuItem.item }}</span>
                 </a>
@@ -61,11 +61,6 @@
     
       <div class="content-wrapper">
       
-        <section class="content-header">
-          <h1>
-            {{ menuItemSelected?.item }}
-          </h1>
-        </section>
     
         <section class="content">
             <ng-content></ng-content>
@@ -77,5 +72,5 @@
         <div class="pull-right hidden-xs">
           <b>Version</b> 1.0.0
         </div>
-        <strong>Copyright &copy; 2017-2018 <a href="#"><strong>TruffleApp</strong> Administrator Application</a>.</strong> Todos os direitos reservados.
+        <strong>Copyright &copy; 2017-2018 <a href="javascript:void()"><strong>TruffleApp</strong> Administrator Application</a>.</strong> Todos os direitos reservados.
       </footer>
