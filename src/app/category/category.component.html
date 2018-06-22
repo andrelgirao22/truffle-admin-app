@@ -31,13 +31,13 @@
           <tr>
             <th style="width: 10px">#</th>
             <th>Descrição</th>
-            <th>Imagem</th>
+            <th>URL Imagem</th>
             <th colspan="2">Ações</th>
           </tr>
           <tr *ngFor="let category of categories">
             <td>{{ category.id }}</td>
             <td>{{ category.name }}</td>
-            <td>{{ category.image }}</td>
+            <td>{{ category.imageUrl }}</td>
             <td width="25">
               <a [routerLink]="['categoryDetail', category.id]"><i class="fa fa-pencil"></i></a>
             </td>

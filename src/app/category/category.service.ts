@@ -35,6 +35,15 @@ export class CategoryService {
             .set('Content-Type', 'application/json')
     }
 
+    getHeadersOnlyToken() {
+        let token = ""
+        if(this.loginService.isLoggedIn()) {
+            token = this.loginService.getLocalStorage().getItem('access_token')
+        }
+        return new HttpHeaders()
+            .set('Authorization','Bearer ' + token)
+    }
+
     getCategory(id: string) {
         return this.http.get<Category>(`${this.urlCategory}/${id}`, {headers: this.getHeaders()})
     }
@@ -53,7 +62,8 @@ export class CategoryService {
     }
 
     sendImage(file: any, id: string) {
-        return this.http.post(`${this.urlCategory}/image/${id}`, file, {headers: this.getHeaders()})
+        return this.http.post(`${this.urlCategory}/picture/${id}`, file, {headers: this.getHeadersOnlyToken()})
+
     }
 
     setCategory(category: Category) {
