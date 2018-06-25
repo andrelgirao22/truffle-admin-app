@@ -1,3 +1,4 @@
+import { httpInterceptorProviders } from './interceptors/index';
 import { LoggedInGuard } from './login/logged.in.guard';
 import { NotificationService } from './shared/messages/notification.service';
 import { LoginModule } from './login/login.module';
@@ -45,7 +46,8 @@ registerLocaleData(localePt, 'pt-BR');
   providers: [
     {provide:LOCALE_ID, useValue: "pt-BR" },
     NotificationService,
-    LoggedInGuard
+    LoggedInGuard,
+    httpInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

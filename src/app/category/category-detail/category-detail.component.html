@@ -7,17 +7,6 @@
       <li><a [routerLink]="['/category']"><i class="fa fa-mail-reply"></i> Voltar</a></li>
     </ol>
   </section>
-<!--section class="content-header">  
-  
-    <div class="col-xs-12">
-      <h3>Categoria</h3>
-      
-      <a  [routerLink]="['category']">
-            <i class="fa fa-mail-reply "></i>Voltar 
-      </a>
-    </div>
-  
-</section-->
 
 <section class="content">
   
@@ -37,7 +26,7 @@
 
             <truffle-adm-input label="Imagem" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
                 <label for="exampleInputFile">Imagem</label>
-                <input type="file" (change)="onFileSelected($event)" name="image" placeholder="Imagem" ngModel autocomplete="off">
+                <input type="file" (change)="onFileSelected($event)" name="image" placeholder="Imagem" ngModel required autocomplete="off">
             </truffle-adm-input>
 
           </div>

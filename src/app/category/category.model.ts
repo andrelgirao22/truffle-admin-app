@@ -5,6 +5,7 @@ export class Category {
     name: string = ''
     //image: string = ''
     imageUrl: string = ''
+    date = new Date();
 
     constructor(){}
     

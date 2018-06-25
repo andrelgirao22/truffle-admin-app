@@ -1,11 +1,10 @@
+
 import { NotificationService } from './../../shared/messages/notification.service';
 import { TRUFFLE_API } from './../../truffle.adm.api';
-import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Category } from './../category.model';
 import { CategoryService } from './../category.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -25,8 +24,7 @@ export class CategoryDetailComponent implements OnInit {
     private categoryService: CategoryService,
     private notificationService: NotificationService,
     private activedRouter: ActivatedRoute,
-    private router: Router,
-    private sanitizer: DomSanitizer) { }
+    private router: Router) { }
 
   ngOnInit() {
     let id: string = this.activedRouter.snapshot.params['id']
@@ -39,11 +37,6 @@ export class CategoryDetailComponent implements OnInit {
        this.imageSelected = res.imageUrl
        this.imageSelected = `${TRUFFLE_API.basePictureUrl}/cat${id}.jpg`
        console.log(res)
-        /*this.categoryService.getImage(res.image).toPromise().then((data: any) =>{
-          if(data) {
-            this.imageSelected = this.sanitizer.bypassSecurityTrustUrl(this.imageType + data.image)
-          }
-        })*/
 
       }, error => {
         this.router.navigate(['/category'])
@@ -58,28 +51,26 @@ export class CategoryDetailComponent implements OnInit {
     let category = new Category()
     category.name = form.name
     category.id = this.category.id
-
-    /*if(this.selectedFile) {
-      category.image = this.selectedFile.name
-    } else {
-      category.image = this.category.image
-    }*/
-    
     
     console.log(this.selectedFile)
     const fd = new FormData()
     fd.append('file', this.selectedFile)
 
-    this.categoryService.addCategory(category).subscribe(data => {
+    this.categoryService.addCategory(category).subscribe(res => {
+      
+      let location = res.headers.get('location')
+      let id = location.substring(location.lastIndexOf('/') + 1)
+      category.id = id
+      
       this.categoryService.sendImage(fd, category.id + "").subscribe(res => {
         this.router.navigate(['/category'])
         let text = category.id ? "alterada" : "incluida"
         console.log(this.notificationService) 
         this.notificationService.notify(`Categoria  ${category.name} ${text} com sucesso`)
       })
+    }, error => {
+      this.notificationService.notify(`Erro ${error.message}`)
     })
-  
-
 
   }
 
