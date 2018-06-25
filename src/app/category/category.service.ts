@@ -1,3 +1,4 @@
+import { Pagination } from './../shared/pagination/pagination.model';
 import { NotificationService } from './../shared/messages/notification.service';
 
 import { Category } from './category.model';
@@ -30,12 +31,24 @@ export class CategoryService implements HttpInterceptor {
         return event
     }
 
-    getCategories(parameters: string): Observable<any> {
-        let url = this.urlCategoryPage
+    getCategories(pagination: Pagination, search?:string): Observable<any> {
+        return this.http.get<Category[]>(this.urlCategoryPage, 
+            {params: {
+                page: `${pagination.page}`,
+                linesPerPage: `${pagination.linesPerPage}`,
+                orderby: pagination.orderby,
+                direction: pagination.direction,
+                name:search ? search : ''
+            } 
+        })
+    }
+
+    /*getCategoriesByName(parameters: string, search?:string): Observable<any> {
+        let url = `${this.urlCategoryPage}/name/${search} `
         if(parameters) url += `${parameters}` 
         console.log(url)
         return this.http.get<Category[]>(url)
-    }
+    }*/
 
     getHeaders() {
         let token = ""

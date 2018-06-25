@@ -1,3 +1,4 @@
+import { Pagination } from './pagination.model';
 import { Component, OnInit, Output, Input, EventEmitter, AfterContentInit } from '@angular/core';
 
 @Component({
@@ -14,13 +15,16 @@ export class PaginationComponent implements OnInit {
   isFirstPage: boolean
   isLastPage: boolean
 
+  pagination = new Pagination()
+
   @Input() page: any
-  @Output() load = new EventEmitter()
+  @Output() load = new EventEmitter<Pagination>()
 
   constructor() {}
 
   ngOnInit() {
-    this.load.emit(`?linesPerPage=${this.linesPerPageSelected}`)
+    this.pagination.linesPerPage = this.linesPerPageSelected
+    this.load.emit(this.pagination)
   }
 
   ngOnChanges() {
@@ -42,7 +46,9 @@ export class PaginationComponent implements OnInit {
 
   linesSelected(event) {
     this.linesPerPageSelected = event.target.value
-    this.load.emit(`?page=0&linesPerPage=${this.linesPerPageSelected}`)
+    this.pagination.linesPerPage = event.target.value
+    this.pagination.page = 0
+    this.load.emit(this.pagination)
   }
 
   getTotalPages() {
@@ -59,18 +65,24 @@ export class PaginationComponent implements OnInit {
     let pageSelected = _page - 1
     console.log(pageSelected)
     if(_page <= this.totalPages) {
-      this.load.emit(`?page=${pageSelected}&linesPerPage=${this.linesPerPageSelected}`)
+      this.pagination.page = pageSelected
+      this.pagination.linesPerPage = this.linesPerPageSelected
+      this.load.emit(this.pagination)
     }
   }
 
   firstPage() {
-    this.load.emit(`?page=0&linesPerPage=${this.linesPerPageSelected}`)
+    this.pagination.page = 0
+    this.pagination.linesPerPage = this.linesPerPageSelected
+    this.load.emit(this.pagination)
   }
 
   lastPage() {
     if(this.totalPages) {
       let lastPage = this.totalPages - 1
-      this.load.emit(`?page=${lastPage}&linesPerPage=${this.linesPerPageSelected}`)
+      this.pagination.page = lastPage
+      this.pagination.linesPerPage = this.linesPerPageSelected
+      this.load.emit(this.pagination)
     }
   }
 

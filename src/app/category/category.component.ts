@@ -1,10 +1,13 @@
+import { Pagination } from './../shared/pagination/pagination.model';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { NotificationService } from '../shared/messages/notification.service';
 import { Component, OnInit } from '@angular/core';
 import { Category } from './category.model';
 import { CategoryService } from './category.service';
 
+import 'rxjs/add/operator/switchMap'
+import 'rxjs/add/operator/debounce'
 
 @Component({
   selector: 'truffle-adm-category',
@@ -17,6 +20,7 @@ export class CategoryComponent implements OnInit {
   categorySelected: Category
 
   searchForm: FormGroup
+  searchControl: FormControl
 
   page: any
 
@@ -27,15 +31,24 @@ export class CategoryComponent implements OnInit {
       private router: Router) { }
 
   ngOnInit() {
+
+    this.searchControl = this.formBuilder.control('')
+
     this.searchForm = this.formBuilder.group({
-      search: this.formBuilder.control('', [])
+      search: this.searchControl
     })
+    let pagination = new Pagination() 
+
+    this.searchControl.valueChanges
+      .switchMap(term => this.categoryService.getCategories(pagination, term))
+      .subscribe(result => {
+        this.categories = result.content
+      })
   }
 
-  loadCategories(parameters: string) {
-     
-    parameters += parameters ? "&orderby=id" : "?orderby=id"
-    this.categoryService.getCategories(parameters).subscribe(_page => {
+  loadCategories(pagination: Pagination, seach?: string) { 
+    console.log('pagination',pagination)
+    this.categoryService.getCategories(pagination, seach).subscribe(_page => {
       if(_page) {
         this.page = _page
         this.categories = _page.content
@@ -54,7 +67,9 @@ export class CategoryComponent implements OnInit {
   deleteCategory() {
     this.categoryService.delete(this.categorySelected.id).subscribe(res => {
       this.notificationService.notify(`Categoria excluida com sucesso ${this.categorySelected.name}`)
-      this.loadCategories("?linesPerPage=5")
+      let pagination = new Pagination()      
+      pagination.linesPerPage = 5
+      this.loadCategories(pagination)
 
       this.categoryService.deletePicture(this.categorySelected.id).subscribe(res=> {
         console.log('image deleted')
