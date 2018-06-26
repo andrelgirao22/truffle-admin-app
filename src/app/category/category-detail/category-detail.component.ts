@@ -58,9 +58,11 @@ export class CategoryDetailComponent implements OnInit {
 
     this.categoryService.addCategory(category).subscribe(res => {
       
-      let location = res.headers.get('location')
-      let id = location.substring(location.lastIndexOf('/') + 1)
-      category.id = id
+      if(!category.id) {
+        let location = res.headers.get('location')
+        let id = location.substring(location.lastIndexOf('/') + 1)
+        category.id = id
+      }
       
       this.categoryService.sendImage(fd, category.id + "").subscribe(res => {
         this.router.navigate(['/category'])

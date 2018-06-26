@@ -24,7 +24,7 @@ export class CategoryService implements HttpInterceptor {
         let token = ""
         if(this.loginService.isLoggedIn()) {
             token = this.loginService.getLocalStorage().getItem('access_token')
-            req.headers.set('Authorization', token)
+            req.headers.append('Authorization', token)
         }
         
         let event = next.handle(req)
@@ -76,7 +76,10 @@ export class CategoryService implements HttpInterceptor {
     addCategory(category: any): Observable<any> {
         console.log(`${this.urlCategory}`)
         if(category.id) {
-            return  this.http.put<Category>(`${this.urlCategory}/${category.id}`, JSON.stringify(category))
+            return  this.http.put<Category>(
+                    `${this.urlCategory}/${category.id}`, 
+                    JSON.stringify(category),
+                    {headers: this.getHeaders()})
         } else {
             return  this.http.post<Category>(
                 `${this.urlCategory}`, 
