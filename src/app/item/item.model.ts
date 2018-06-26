@@ -6,6 +6,7 @@ export class Item {
 
     id: number
     name: string
+    date = new Date()
     description: string
     image: string
     imageLoaded: any

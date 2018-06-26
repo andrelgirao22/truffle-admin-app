@@ -1,3 +1,4 @@
+import { Pagination } from './../shared/pagination/pagination.model';
 import { Observable } from 'rxjs/Observable';
 import { Item } from './item.model';
 import { Injectable } from "@angular/core";
@@ -9,7 +10,7 @@ import { LoginService } from '../login/login.service';
 @Injectable()
 export class ItemService {
 
-    url:string = `${TRUFFLE_API}/item`
+    url:string = `${TRUFFLE_API.baseUrl}/item`
 
     constructor(
         private http: HttpClient,
@@ -20,13 +21,21 @@ export class ItemService {
         this.notificationService.notify(message)
     }
 
-    getItens(parameters: string): Observable<any> {
-
+    getItens(pagination: Pagination, _search?: string): Observable<any> {
         let url = `${this.url}/page`
-        if(parameters) url += `${parameters}` 
-        console.log(url)
-
-        return this.http.get<Item[]>(`${url}`, {headers: this.getHeaders()})
+        console.log('url',url);
+        
+        return this.http.get<Item[]>(`${url}`, 
+            {
+                headers: this.getHeaders(),
+                params: {
+                    page: `${pagination.page}`,
+                    linesPerPage: `${pagination.linesPerPage}`,
+                    orderby: pagination.orderby,
+                    direction: pagination.direction,
+                    search:_search ? _search : ''
+                }
+            })
     }
 
     getPriceType(): Observable<any> {
