@@ -18,8 +18,6 @@ import localePt from '@angular/common/locales/pt'
 import { registerLocaleData } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { MenuModule } from './menu/menu.module';
-import { ItemComponent } from './item/item.component';
-import { ItemDetailComponent } from './item/item-detail/item-detail.component';
 import { OrderComponent } from './order/order.component';
 import { AccountComponent } from './account/account.component';
 
@@ -29,8 +27,6 @@ registerLocaleData(localePt, 'pt-BR');
   declarations: [
     AppComponent,
     HomeComponent,
-    ItemComponent,
-    ItemDetailComponent,
     OrderComponent,
     AccountComponent
   ],

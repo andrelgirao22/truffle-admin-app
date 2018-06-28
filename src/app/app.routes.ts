@@ -10,8 +10,6 @@ export const ROUTES: Routes = [
     {path: 'login', loadChildren: './login/login.module#LoginModule'},
     {path: '', component: HomeComponent, canActivate: [LoggedInGuard]},
     {path: 'category', loadChildren: './category/category.module#CategoryModule', canActivate: [LoggedInGuard]},
-    {path: 'item', component: ItemComponent, canActivate: [LoggedInGuard]},
-    {path: 'itemDetail', component: ItemDetailComponent, canActivate: [LoggedInGuard]},
-    {path: 'itemDetail/:id', component: ItemDetailComponent, canActivate: [LoggedInGuard]},
+    {path: 'item', loadChildren: './item/item.module#ItemModule', canActivate: [LoggedInGuard]},
     {path: 'order', component: OrderComponent, canActivate: [LoggedInGuard]}
 ]

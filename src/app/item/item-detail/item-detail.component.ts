@@ -1,3 +1,4 @@
+import { Pagination } from './../../shared/pagination/pagination.model';
 import { state } from '@angular/animations';
 import { Category } from './../../category/category.model';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -87,9 +88,10 @@ export class ItemDetailComponent implements OnInit {
   }
 
   loadCategories() {
-    /*this.categoryService.getCategories("?orderby=id").subscribe(_categories => {
-      this.categories = _categories.content
-    }, error => console.log(error))*/
+    let pagination = new Pagination()
+    this.categoryService.getAllCategories().subscribe(_categories => {
+      this.categories = _categories
+    }, error => console.log(error))
   }
 
   loadPriceTypes() {
@@ -151,9 +153,10 @@ export class ItemDetailComponent implements OnInit {
   }
 
   selectCategory(value: any) {
-    this.categorySelected.id = value.split('-')[0]
-    this.categorySelected.name = value.split('-')[1]
-    console.log(this.categorySelected)
+    console.log('valor categoria', value)
+    this.categorySelected.id = value
+    //this.categorySelected.name = value.split('-')[1]
+    //console.log(this.categorySelected)*/
   }
 
   onFileSelected(event: any) {

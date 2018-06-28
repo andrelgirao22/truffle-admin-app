@@ -43,6 +43,10 @@ export class CategoryService implements HttpInterceptor {
         })
     }
 
+    getAllCategories(): Observable<any> {
+        return this.http.get<Category[]>(this.urlCategory, {headers: this.getHeaders()})
+    }
+
     /*getCategoriesByName(parameters: string, search?:string): Observable<any> {
         let url = `${this.urlCategoryPage}/name/${search} `
         if(parameters) url += `${parameters}` 

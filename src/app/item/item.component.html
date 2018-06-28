@@ -1,96 +1,86 @@
 
-<section class="content-header">
-  <h1>
-   Itens 
-  </h1>
-</section>
-
-<section class="content">
-<div class="row">
-  <div class="col-xs-12 col-md-12">
-    <div class="box">
-      <div class="box-header with-border">
-        <h4 class="box-title">Lista de Itens</h4>
-      </div>
-      
-      <div class="box-body">
-        <div *ngIf="itens.length === 0">
-          <p>Não há Itens</p>
-        </div>
-
-        <form class="row" [formGroup]="searchForm">
-          <div class="col-xs-8">
-            <a class="btn bg-red" [routerLink]="['categoryDetail']">
-              Novo <i class="fa fa-plus"></i> 
-            </a>
-          </div>
-          <div class="col-xs-4">
-            <truffle-adm-input [noHelpBlock]="false">
-                <input type="text" class="form-control" formControlName="search" 
-                       placeholder="Pesquisar" autocomplete="off">
-                <span class="fa fa-search form-control-feedback"></span>
-            </truffle-adm-input>
-          </div>
-        </form>
-
-        <table class="table table-bordered" *ngIf="itens.length > 0">
-          <tr>
-            <th style="width: 10px">#</th>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Situação</th>
-            <th>Data</th>
-            <th colspan="3">Ações</th>
-          </tr>
-          <tr *ngFor="let item of itens">
-            <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.description }}</td>
-            <td>
-              <div class="box-tools pull-center">
-                  <span class="label" 
-                        [class.label-success]="item.status === 'PUBLICADO' " 
-                        [class.label-danger]="item.status === 'PENDENTE'">{{ item.status }}</span>
-              </div>
-            </td>
-            <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
-            <td>
-              <a href="javascript:void()" (click)="setStatus(item)"><i class="fa fa-exchange"></i></a>
-            </td>
-            <td>
-              <a [routerLink]="['/itemDetail', item.id]"><i class="fa fa-pencil"></i></a>
-            </td>
-            <td> 
-              <a href="javascript:void()" (click)="select(item)" data-toggle="modal" data-target="#myModal"><i class="fa fa-remove"></i></a>
-              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                      <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
-                    </div>
-                    <div class="modal-body">
-                      Confirma excluir o item <b>{{ itemSelected?.name }}</b> ?
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                      <button type="button" class="btn btn-danger" (click)="delete()" data-dismiss="modal">Confirmar</button>
-                    </div>
-                  </div>  
-                </div>
-                </div>
-            </td>
-          </tr>
-          
-        </table>
-      </div>
-
-      <truffle-adm-pagination 
-          [page]="getPage()" 
-          (load)="loadItens($event)">
-        </truffle-adm-pagination>
+<div class="col-xs-12 col-md-12">
+  <div class="box">
+    <div class="box-header with-border">
+      <h4 class="box-title">Lista de Itens</h4>
     </div>
-  
+    
+    <div class="box-body">
+      <div *ngIf="itens.length === 0">
+        <p>Não há Itens</p>
+      </div>
+
+      <form class="row" [formGroup]="searchForm">
+        <div class="col-xs-8">
+          <a class="btn bg-red" [routerLink]="['itemDetail']">
+            Novo <i class="fa fa-plus"></i> 
+          </a>
+        </div>
+        <div class="col-xs-4">
+          <truffle-adm-input [noHelpBlock]="false">
+              <input type="text" class="form-control" formControlName="search" 
+                      placeholder="Pesquisar" autocomplete="off">
+              <span class="fa fa-search form-control-feedback"></span>
+          </truffle-adm-input>
+        </div>
+      </form>
+
+      <table class="table table-bordered" *ngIf="itens.length > 0">
+        <tr>
+          <th style="width: 10px">#</th>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>Situação</th>
+          <th>Data</th>
+          <th colspan="3">Ações</th>
+        </tr>
+        <tr *ngFor="let item of itens">
+          <td>{{ item.id }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td>
+            <div class="box-tools pull-center">
+                <span class="label" 
+                      [class.label-success]="item.status === 'PUBLICADO' " 
+                      [class.label-danger]="item.status === 'PENDENTE'">{{ item.status }}</span>
+            </div>
+          </td>
+          <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
+          <td>
+            <a href="javascript:void()" (click)="setStatus(item)"><i class="fa fa-exchange"></i></a>
+          </td>
+          <td>
+            <a [routerLink]="['/itemDetail', item.id]"><i class="fa fa-pencil"></i></a>
+          </td>
+          <td> 
+            <a href="javascript:void()" (click)="select(item)" data-toggle="modal" data-target="#myModal"><i class="fa fa-remove"></i></a>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+                  </div>
+                  <div class="modal-body">
+                    Confirma excluir o item <b>{{ itemSelected?.name }}</b> ?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" (click)="delete()" data-dismiss="modal">Confirmar</button>
+                  </div>
+                </div>  
+              </div>
+              </div>
+          </td>
+        </tr>
+        
+      </table>
+    </div>
+
+    <truffle-adm-pagination 
+        [page]="getPage()" 
+        (load)="loadItens($event)">
+      </truffle-adm-pagination>
   </div>
+
 </div>
-</section>

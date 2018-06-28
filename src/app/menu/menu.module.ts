@@ -9,7 +9,6 @@ import { MenuComponent } from './menu.component';
   imports: [
     CommonModule,
     RouterModule
-    //RouterModule.forChild(MENU_ROUTES)
   ],
   declarations: [
     MenuComponent
