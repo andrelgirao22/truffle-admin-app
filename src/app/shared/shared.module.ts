@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { SnackbarComponent } from './messages/snackbar/snackbar.component';
 import { NgModule, ModuleWithProviders } from "@angular/core";
 import { InputComponent } from "./input/input.component";
-import { NotificationService } from './messages/notification.service';
 import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({

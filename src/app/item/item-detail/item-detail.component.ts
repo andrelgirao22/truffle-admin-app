@@ -31,6 +31,8 @@ export class ItemDetailComponent implements OnInit {
 
   numberPattern = /^[0-9]*$/
 
+  mask: any[] = ['+', '1', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+
   private readonly imageType: string = 'data:image/PNG;base64,'
 
   constructor(

@@ -70,15 +70,28 @@
                                 <option *ngFor="let type of priceTypes">{{ type }}</option>
                             </select>  
                           </truffle-adm-input>
-                        
+
                           <truffle-adm-input label="Preço" errorMessage="Informe somente números" [noHelpBlock]="true">
-                              <input type="text" class="form-control" name="price" placeholder="Preço" 
-                                    ngModel required autocomplete="off" pattern="^[0-9]*$">
+                            <input class="form-control" name="price" placeholder="Preço" ngModel required autocomplete="off"
+                               currencyMask [(ngModel)]="formPrice.price" 
+                               [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"/>
                           </truffle-adm-input>
+
+                          <truffle-adm-input label="Data Inicio" errorMessage="" [noHelpBlock]="true">
+                              <div class="input-group">
+                                  <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                  </div>
+                                  <input class="form-control pull-right" name="date"  id="reservation" type="text" ngModel>
+                                </div>
+                          </truffle-adm-input>
+
+                         
+  
                         </form>
-                        <div class="modal-footer">
+                        <div class="modal-footer"> 
                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                          <button type="button" class="btn btn-danger" (click)="addPrice(formPrice.value)" data-dismiss="modal">Confirmar</button>
+                          <button type="button" class="btn btn-danger" (click)="addPrice(formPrice.value)" data-dismiss="modal" [disabled]="!formPrice.valid">Confirmar</button>
                         </div>
                       </div>
                     </div>
@@ -149,5 +162,5 @@
     </div>
     {{itemForm.value | json }}
     </form>
-</div>
+  </div>
 </section>
