@@ -54,6 +54,8 @@ export class ItemService {
     addItem(item: Item): Observable<any> {
 
         if(item.id) {
+            console.log('item', item);
+            console.log('url put item', this.url);
             return this.http.put<Item>(`${this.url}/${item.id}`, JSON.stringify(item), {headers: this.getHeaders()})
         } else {
             return this.http.post<Item>(`${this.url}`, JSON.stringify(item), {headers: this.getHeaders(), observe: 'response'})

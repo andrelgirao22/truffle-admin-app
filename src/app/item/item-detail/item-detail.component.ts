@@ -1,3 +1,4 @@
+import { TRUFFLE_API } from './../../truffle.adm.api';
 import { Pagination } from './../../shared/pagination/pagination.model';
 import { state } from '@angular/animations';
 import { Category } from './../../category/category.model';
@@ -43,10 +44,10 @@ export class ItemDetailComponent implements OnInit {
     private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.setupForm()
     this.loadCategories()
     this.loadItem()
     this.loadPriceTypes()
-    this.setupForm()
   }
 
   setupForm() {
@@ -59,35 +60,40 @@ export class ItemDetailComponent implements OnInit {
     })
 
     this.itemForm = this.formBuilder.group({
+      id: this.formBuilder.control(''),
       name: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       description: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       category: this.formBuilder.control('', [Validators.required]),
       image: this.formBuilder.control(''),
+      imageUrl: this.formBuilder.control(''),
       prices: this.formBuilder.array([])
     })
   }
 
   loadItem() {
+
     let id: string = this.activedRouter.snapshot.params['id']
-    console.log(id)
     if(id) {
-     /* this.itemService.getItem(id).subscribe(res => {
+      this.itemService.getItem(id).subscribe(res => {
+
+        this.prices = res.prices
 
         this.itemForm.patchValue({
+          id: res.id,
           name: res.name,
           description: res.description,
-          category: `${res.category.id} - ${res.category.name}` 
+          category: res.category.id,
+          imageUrl: res.imageUrl
         })
         
-        this.selectCategory(`${res.category.id} - ${res.category.name}`)
+        this.imageSelected = res.imageUrl
+        this.selectCategory(this.itemForm.value.category)
+        this.prices.forEach(price => {
+          this.itemForm.value.prices.push(price)
+        })
 
-        this.itemForm.value.id = res.id
-        this.itemForm.value.name = res.name
-        this.itemForm.value.description = res.description
-        this.itemForm.value.image = res.image
-        this.itemForm.value.prices = res.prices
-        this.itemForm.value.status = res.status
-      }) */
+        /*this.itemForm.value.status = res.status*/
+      }) 
     }
   }
 
@@ -100,7 +106,6 @@ export class ItemDetailComponent implements OnInit {
 
   loadPriceTypes() {
     this.itemService.getPriceType().subscribe(types=> {
-      console.log(types)
       this.priceTypes = types
     })
   }
@@ -114,12 +119,7 @@ export class ItemDetailComponent implements OnInit {
     item.description = this.itemForm.value.description
     item.category = this.categorySelected
     item.prices = this.itemForm.value.prices
-
-    /*if(this.selectedFile) {
-      item.image = this.selectedFile.name
-    } else {
-      item.image = this.itemForm.value.image
-    }*/
+    item.imageUrl = this.itemForm.value.imageUrl
     
     const fd = new FormData()
     fd.append('file', this.selectedFile)
@@ -132,11 +132,17 @@ export class ItemDetailComponent implements OnInit {
         item.id = id
       }
 
-      this.itemService.sendImage(fd, item.id + "").subscribe(res => {
-        this.router.navigate(['/item'])
-        let msg: string = this.itemForm.value.id ? "alterado" : "incluído"
-        this.itemService.setMessage(`Item ${item.description} ${msg} com sucesso`)
-      })
+      if(this.selectedFile) {
+        this.itemService.sendImage(fd, item.id + "").subscribe(res => {
+          this.itemService.setMessage(`Image incluida com sucesso`)
+        }, error => {
+          this.itemService.setMessage(`Problemas ao gravar imagens: ${error.error.message}`)
+        } )
+      }
+
+      this.router.navigate(['/item'])
+      let msg: string = this.itemForm.value.id ? "alterado" : "incluído"
+      this.itemService.setMessage(`Item ${item.description} ${msg} com sucesso`)
     })
 
     
@@ -151,8 +157,6 @@ export class ItemDetailComponent implements OnInit {
     this.prices.push(price)
     
     this.itemForm.value.prices.push(price)
-
-    console.log('prices', this.prices)
 
   }
 
@@ -172,8 +176,6 @@ export class ItemDetailComponent implements OnInit {
   selectCategory(value: any) {
     console.log('valor categoria', value)
     this.categorySelected.id = value
-    //this.categorySelected.name = value.split('-')[1]
-    //console.log(this.categorySelected)*/
   }
 
   onFileSelected(event: any) {
@@ -186,6 +188,5 @@ export class ItemDetailComponent implements OnInit {
 
     reader.readAsDataURL(this.selectedFile)
   }
-
 
 }

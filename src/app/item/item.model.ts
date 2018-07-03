@@ -8,7 +8,7 @@ export class Item {
     name: string
     date = new Date()
     description: string
-    image: string
+    imageUrl: string
     imageLoaded: any
     category: Category
     prices: Price[] = []
