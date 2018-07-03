@@ -1,4 +1,3 @@
-
 <section class="content-header">
   <h1>
     Item
@@ -12,27 +11,19 @@
   <div class="row">
     <form [formGroup]="itemForm" novalidate>
 
-        <div class="box box-primary">
-            <div class="box-body pad">
-              <div class="col-xs-12">
-                <p class="lead">Dados</p>
-              </div>
+      <div class="box box-primary">
+          <div class="box-body pad">
+            <div class="col-xs-12">
+              <p class="lead">Dados</p>
+            </div>
 
-              <div class="col-sm-12 col-md-4 col-xs-12">               
-                <truffle-adm-input label="Nome" errorMessage="Campo Obrigatório (informe um mínimo de 5 caracteres)" [noHelpBlock]="true">
-                    <input type="text" class="form-control"placeholder="Nome" formControlName="name">
-                </truffle-adm-input>
-              </div>
-
-              <div class="col-sm-12 col-md-8 col-xs-12">
-                <truffle-adm-input label="Descrição" errorMessage="Campo Obrigatório (informe um mínimo de 5 caracteres)" [noHelpBlock]="true">
-                    <input type="text" class="form-control" formControlName="description" placeholder="Descrição">
-                </truffle-adm-input> 
-              </div>
-              <div class="row"></div>
-        
-              <div class="col-sm-12 col-md-4 col-xs-12">
-                <truffle-adm-input label="Categoria" errorMessage="Campo Requerido" [noHelpBlock]="true">
+            <div class="col-sm-12 col-md-6 col-xs-12">               
+              <truffle-adm-input label="Nome" errorMessage="Campo Obrigatório (informe um mínimo de 5 caracteres)" [noHelpBlock]="true">
+                <input type="text" class="form-control"placeholder="Nome" formControlName="name">
+              </truffle-adm-input>
+            </div>
+            <div class="col-sm-12 col-md-6 col-xs-12">
+              <truffle-adm-input label="Categoria" errorMessage="Campo Requerido" [noHelpBlock]="true">
                   <select class="form-control select2 select2-hidden-accessible" placeholer="Tipo"
                       formControlName="category" style="width: 100%;" tabindex="-1" 
                       aria-hidden="true" (change)="selectCategory(itemForm.value.category)">
@@ -40,20 +31,92 @@
                     <option *ngFor="let category of categories" [value]="category.id">{{ category.id }} - {{ category.name }}</option>
                   </select>  
                 </truffle-adm-input>
-              </div>
+            </div>
 
-              <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-sm-12 col-md-12 col-xs-12">
+              <truffle-adm-input label="Descrição" errorMessage="Campo Obrigatório (informe um mínimo de 5 caracteres)" [noHelpBlock]="true">
+                  <input type="text" class="form-control" formControlName="description" placeholder="Descrição">
+              </truffle-adm-input> 
+            </div>
+            
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-plus my-float"></i> Preço
+              </button>
 
-                <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
-                  <i class="fa fa-plus my-float"></i> Preço
-                </button>
+              <p *ngIf="prices.length === 0"><b>Não há Preços para o item</b></p>
+            </div>
 
-                <p *ngIf="item.prices.length === 0"><b>Não há Preços para o item</b></p>
+            <div class="row"></div>
+            
+            <div class="col-sm-12 col-md-12 col-xs-12">
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                      <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+                    </div>
+                    <div class="modal-body">
+                      <form  [formGroup]="priceForm" novalidate>
                 
-              </div>
+                        <truffle-adm-input label="Tipo Preço" errorMessage="Campo Requerido" [noHelpBlock]="true">
+                          <select class="form-control select2 select2-hidden-accessible" placeholer="Tipo"
+                                  formControlName="typePrice" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                              <option disabled selected value>Tipo de Preço</option>   
+                              <option *ngFor="let type of priceTypes" [value]="type">{{ type }}</option>
+                          </select>  
+                        </truffle-adm-input>
 
-              <div class="col-sm-12 col-md-12 col-xs-12">
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <truffle-adm-input label="Preço" errorMessage="Informe somente números" [noHelpBlock]="true">
+                          <input class="form-control" formControlName="price" placeholder="Preço" required autocomplete="off"
+                              currencyMask  
+                              [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"/>
+                        </truffle-adm-input>
+
+                        <truffle-adm-input label="Data Inicio" errorMessage="" [noHelpBlock]="true">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                  <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control pull-right" name="date"  id="reservation" type="text" formControlName="dtStart">
+                              </div>
+                        </truffle-adm-input>
+                        {{ priceForm.value | json }}
+                      </form>
+                      <div class="modal-footer"> 
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" (click)="addPrice()" data-dismiss="modal" [disabled]="!priceForm.valid">Confirmar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <table class="table table-bordered" 
+                    *ngIf="prices.length > 0">
+                <thead>
+                  <tr>
+                    <th>Tipo Preço</th>
+                    <th>Valor</th>
+                    <th colspan="3">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let price of prices">
+                    <td>{{ price?.typePrice }}</td>
+                    <td><span class="pull-right">{{ price?.price | currency: 'BRL': true }}</span></td>
+                    <td>
+                      <a [routerLink]="['/priceDetail', price.id]"><i class="fa fa-pencil"></i></a>
+                    </td>
+                    <td>
+                      <a (click)="selectPrice(price)" data-toggle="modal" data-target="#priceModal"><i class="fa fa-remove"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+                <div class="modal fade" id="priceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -61,105 +124,36 @@
                         <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
                       </div>
                       <div class="modal-body">
-                        <form #formPrice="ngForm" novalidate>
-                  
-                          <truffle-adm-input label="Tipo Preço" errorMessage="Campo Requerido" [noHelpBlock]="true">
-                            <select class="form-control select2 select2-hidden-accessible" placeholer="Tipo"
-                                    ngModel name="priceType" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
-                                <option disabled selected value>Tipo de Preço</option>   
-                                <option *ngFor="let type of priceTypes">{{ type }}</option>
-                            </select>  
-                          </truffle-adm-input>
-
-                          <truffle-adm-input label="Preço" errorMessage="Informe somente números" [noHelpBlock]="true">
-                            <input class="form-control" name="price" placeholder="Preço" ngModel required autocomplete="off"
-                               currencyMask [(ngModel)]="formPrice.price" 
-                               [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"/>
-                          </truffle-adm-input>
-
-                          <truffle-adm-input label="Data Inicio" errorMessage="" [noHelpBlock]="true">
-                              <div class="input-group">
-                                  <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                  </div>
-                                  <input class="form-control pull-right" name="date"  id="reservation" type="text" ngModel>
-                                </div>
-                          </truffle-adm-input>
-
-                         
-  
-                        </form>
-                        <div class="modal-footer"> 
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                          <button type="button" class="btn btn-danger" (click)="addPrice(formPrice.value)" data-dismiss="modal" [disabled]="!formPrice.valid">Confirmar</button>
-                        </div>
+                        Confirma excluir do preço <b>{{ priceSelected?.typePrice }}</b> ?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" (click)="deletePrice()" data-dismiss="modal">Confirmar</button>
                       </div>
                     </div>
                   </div>
                 </div>
-                
-                <div class="row"></div>
+            </div>
 
-                <table class="table table-bordered col-md-12 col-sm-12 col-xs-12" 
-                      *ngIf="item.prices.length > 0">
-                    <tr>
-                      <th>Tipo Preço</th>
-                      <th>Valor</th>
-                    </tr>
-                    <tr *ngFor="let price of item.prices">
-                      <td>{{ price?.typePrice }}</td>
-                      <td class="pull-left">{{ price?.price | currency: 'BRL': true }}</td>
-                      
-                      <td>
-                        <div>
-                          <button class="btn btn-info" 
-                            [routerLink]="['/priceDetail', item.id]"><i class="fa fa-pencil"></i></button>
-                          <button class="btn btn-danger"  (click)="selectPrice(price)"
-                            data-toggle="modal" data-target="#priceModal"><i class="fa fa-remove"></i></button>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
+            <div class="col-sm-12 col-md-4 col-xs-12">
+              <truffle-adm-input label="Imagem" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
+                  <label for="exampleInputFile">Imagem</label>
+                  <input type="file" (change)="onFileSelected($event)" formControlName="image" placeholder="Imagem">
+              </truffle-adm-input>
+            </div>
 
-                  <div class="modal fade" id="priceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
-                          </div>
-                          <div class="modal-body">
-                            Confirma excluir do preço <b>{{ priceSelected?.typePrice }}</b> ?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-danger" (click)="deletePrice()" data-dismiss="modal">Confirmar</button>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="col-sm-12 col-md-4 col-xs-12">
-                <truffle-adm-input label="Imagem" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
-                    <label for="exampleInputFile">Imagem</label>
-                    <input type="file" (change)="onFileSelected($event)" formControlName="image" placeholder="Imagem">
-                </truffle-adm-input>
-              </div>
-
-              <div class="col-sm-12"></div>
-
-              <div class="col-sm-12 col-md-8 col-xs-12" *ngIf="imageSelected">
-                  <img [src]="imageSelected" width="200px">
-              </div>
-              
-              <div class="col-sm-2 col-xs-12 col-md-2">
-                  <button class="btn btn-primary btn-block"
-                          (click)="save(itemForm.value)"
-                          [disabled]="!itemForm.valid || item.prices.length === 0">Gravar</button>
-              </div>
-          </div>
-    </div>
+            <div *ngIf="imageSelected" class="col-sm-12 col-md-12 col-xs-12">
+                <img [src]="imageSelected" width="200px">
+            </div>
+            
+            <div class="row"></div>
+            <div class="col-sm-2 col-xs-12 pull-left">
+                <button class="btn btn-primary btn-block"
+                        (click)="save()"
+                        [disabled]="!itemForm.valid || prices.length === 0">Gravar</button>
+            </div>
+        </div>
+  </div>
     {{itemForm.value | json }}
     </form>
   </div>

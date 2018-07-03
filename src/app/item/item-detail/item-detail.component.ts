@@ -9,7 +9,7 @@ import { Item } from './../item.model';
 import { Component, OnInit } from '@angular/core';
 import { Price } from '../price.model';
 import { CategoryService } from '../../category/category.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'truffle-adm-item-detail',
@@ -20,27 +20,26 @@ export class ItemDetailComponent implements OnInit {
 
   selectedFile: File
   imageSelected: any
-  item: Item = new Item()
 
   categories: Category[] = []
   priceTypes: any [] = []
+  prices: Price[] = []
   priceSelected: Price
   categorySelected: Category = new Category()
 
   itemForm: FormGroup
+  priceForm: FormGroup
 
   numberPattern = /^[0-9]*$/
 
   mask: any[] = ['+', '1', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
-  private readonly imageType: string = 'data:image/PNG;base64,'
 
   constructor(
     private itemService: ItemService,
     private categoryService: CategoryService,
     private activedRouter: ActivatedRoute,
     private router: Router,
-    private sanitizer: DomSanitizer,
     private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -51,11 +50,20 @@ export class ItemDetailComponent implements OnInit {
   }
 
   setupForm() {
+
+    this.priceForm = this.formBuilder.group({
+      typePrice: '',
+      price: '',
+      dtStart: '',
+      dtEnd: ''
+    })
+
     this.itemForm = this.formBuilder.group({
-      name: this.formBuilder.control(this.item.name, [Validators.required, Validators.minLength(5)]),
+      name: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       description: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
       category: this.formBuilder.control('', [Validators.required]),
-      image: this.formBuilder.control('')
+      image: this.formBuilder.control(''),
+      prices: this.formBuilder.array([])
     })
   }
 
@@ -63,7 +71,7 @@ export class ItemDetailComponent implements OnInit {
     let id: string = this.activedRouter.snapshot.params['id']
     console.log(id)
     if(id) {
-      this.itemService.getItem(id).subscribe(res => {
+     /* this.itemService.getItem(id).subscribe(res => {
 
         this.itemForm.patchValue({
           name: res.name,
@@ -73,20 +81,14 @@ export class ItemDetailComponent implements OnInit {
         
         this.selectCategory(`${res.category.id} - ${res.category.name}`)
 
-        this.item.id = res.id
-        this.item.name = res.name
-        this.item.description = res.description
-        this.item.image = res.image
-        this.item.prices = res.prices
-        this.item.status = res.status
-        this.itemService.getImage(this.item.image).subscribe((data: any) => {
-          if(data) {
-            this.imageSelected = this.sanitizer.bypassSecurityTrustUrl(this.imageType + data.image)
-          }
-        },
-        error => console.log(error))
-      })
-    } 
+        this.itemForm.value.id = res.id
+        this.itemForm.value.name = res.name
+        this.itemForm.value.description = res.description
+        this.itemForm.value.image = res.image
+        this.itemForm.value.prices = res.prices
+        this.itemForm.value.status = res.status
+      }) */
+    }
   }
 
   loadCategories() {
@@ -103,49 +105,62 @@ export class ItemDetailComponent implements OnInit {
     })
   }
   
-  save(form: any) {
+  save() {
 
     let item = new Item()
-    item.id = this.item.id
+    item.id = this.itemForm.value.id
     item.status = "PENDENTE"
-    item.name = form.name
-    item.description = form.description
+    item.name = this.itemForm.value.name
+    item.description = this.itemForm.value.description
     item.category = this.categorySelected
-    item.prices = this.item.prices
+    item.prices = this.itemForm.value.prices
 
-    if(this.selectedFile) {
+    /*if(this.selectedFile) {
       item.image = this.selectedFile.name
     } else {
-      item.image = this.item.image
-    }
+      item.image = this.itemForm.value.image
+    }*/
     
     const fd = new FormData()
     fd.append('file', this.selectedFile)
 
-    this.itemService.sendImage(fd, item.id + "").subscribe(res => {
-      
-      this.itemService.addItem(item).subscribe(data => {
+    this.itemService.addItem(item).subscribe(res => {
+
+      if(!item.id) {
+        let location = res.headers.get('location')
+        let id = location.substring(location.lastIndexOf('/') + 1)
+        item.id = id
+      }
+
+      this.itemService.sendImage(fd, item.id + "").subscribe(res => {
         this.router.navigate(['/item'])
-        let msg: string = this.item.id ? "alterado" : "incluído"
+        let msg: string = this.itemForm.value.id ? "alterado" : "incluído"
         this.itemService.setMessage(`Item ${item.description} ${msg} com sucesso`)
       })
     })
 
+    
+
   }
 
-  addPrice(formPrice: any) {
+  addPrice() {
     
     let price = new Price()
-    price.typePrice = formPrice.priceType
-    price.price = formPrice.price
-    this.item.prices.push(price)
+    price.typePrice = this.priceForm.value.typePrice
+    price.price = this.priceForm.value.price
+    this.prices.push(price)
+    
+    this.itemForm.value.prices.push(price)
+
+    console.log('prices', this.prices)
+
   }
 
   deletePrice() {
     if(this.priceSelected) {
-      let index = this.item.prices.indexOf(this.priceSelected)
+      let index = this.itemForm.value.prices.indexOf(this.priceSelected)
       if(index > -1) {
-        this.item.prices.slice(index, 1)
+        this.itemForm.value.prices.slice(index, 1)
       }
     }
   }

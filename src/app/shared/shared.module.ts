@@ -9,11 +9,16 @@ import { NgModule, ModuleWithProviders } from "@angular/core";
 import { InputComponent } from "./input/input.component";
 import { PaginationComponent } from './pagination/pagination.component';
 
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { TextMaskModule } from 'angular2-text-mask';
+
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        CurrencyMaskModule,
+        TextMaskModule
     ],
     declarations: [
         InputComponent,
@@ -25,7 +30,9 @@ import { PaginationComponent } from './pagination/pagination.component';
         SnackbarComponent,
         PaginationComponent,
         FormsModule, 
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        CurrencyMaskModule,
+        TextMaskModule
     ]
 })
 export class SharedModule {

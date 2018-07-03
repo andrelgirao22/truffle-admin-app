@@ -51,17 +51,17 @@ export class ItemService {
         return this.http.get(uri, {headers: this.getHeaders()})
     }
 
-    addItem(item: Item) {
+    addItem(item: Item): Observable<any> {
 
         if(item.id) {
             return this.http.put<Item>(`${this.url}/${item.id}`, JSON.stringify(item), {headers: this.getHeaders()})
         } else {
-            return this.http.post<Item>(`${this.url}`, JSON.stringify(item), {headers: this.getHeaders()})
+            return this.http.post<Item>(`${this.url}`, JSON.stringify(item), {headers: this.getHeaders(), observe: 'response'})
         }
     }
 
     sendImage(file: any, id: string) {
-        return this.http.post(`${this.url}/image/${id}`, file, {headers: this.getHeaders()})
+        return this.http.post(`${this.url}/picture/${id}`, file, {headers: this.getHeadersOnlyToken()})
     }
 
     delete(id: number) {
@@ -72,6 +72,15 @@ export class ItemService {
         return new HttpHeaders()
             .set('Authorization','Bearer ' + this.loginService.getLocalStorage().getItem('access_token'))
             .set('Content-Type', 'application/json')
+    }
+
+    getHeadersOnlyToken() {
+        let token = ""
+        if(this.loginService.isLoggedIn()) {
+            token = this.loginService.getLocalStorage().getItem('access_token')
+        }
+        return new HttpHeaders()
+            .set('Authorization','Bearer ' + token)
     }
 
 }
