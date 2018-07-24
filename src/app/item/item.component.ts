@@ -42,7 +42,7 @@ export class ItemComponent implements OnInit {
   }
 
   loadItens(pagination: Pagination) {
-
+    pagination.orderby = "id"
     this.itemService.getItens(pagination).subscribe(_page => {
       this.page = _page
       this.itens = _page.content

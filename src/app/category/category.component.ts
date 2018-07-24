@@ -47,7 +47,7 @@ export class CategoryComponent implements OnInit {
   }
 
   loadCategories(pagination: Pagination, seach?: string) { 
-    console.log('pagination',pagination)
+    pagination.orderby = "id"
     this.categoryService.getCategories(pagination, seach).subscribe(_page => {
       if(_page) {
         this.page = _page
