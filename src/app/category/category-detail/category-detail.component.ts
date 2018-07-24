@@ -51,7 +51,10 @@ export class CategoryDetailComponent implements OnInit {
     let category = new Category()
     category.name = form.name
     category.id = this.category.id
+    category.imageUrl = this.category.imageUrl
     
+    console.log('form', form)
+
     console.log(this.selectedFile)
     const fd = new FormData()
     fd.append('file', this.selectedFile)
@@ -64,16 +67,25 @@ export class CategoryDetailComponent implements OnInit {
         category.id = id
       }
       
-      this.categoryService.sendImage(fd, category.id + "").subscribe(res => {
-        this.router.navigate(['/category'])
-        let text = category.id ? "alterada" : "incluida"
-        console.log(this.notificationService) 
-        this.notificationService.notify(`Categoria  ${category.name} ${text} com sucesso`)
-      })
+      if(this.selectedFile) {
+        this.categoryService.sendImage(fd, category.id + "").subscribe(res => {
+          this.sucesso(category)
+        }, error => {})
+      } else {
+        this.sucesso(category)
+      }
+
     }, error => {
-      this.notificationService.notify(`Erro ${error.message}`)
+      this.categoryService.setMessage(`${error.error.message}`)
     })
 
+  }
+
+  private sucesso(category: Category) {
+    this.router.navigate(['/category'])
+      let text = category.id ? "alterada" : "incluida"
+      console.log(this.notificationService) 
+      this.notificationService.notify(`Categoria  ${category.name} ${text} com sucesso`)
   }
 
   onFileSelected(event: any) {

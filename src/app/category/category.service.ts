@@ -31,6 +31,10 @@ export class CategoryService implements HttpInterceptor {
         return event
     }
 
+    setMessage(message: string) {
+        this.notificationService.notify(message)
+    }
+
     getCategories(pagination: Pagination, search?:string): Observable<any> {
         return this.http.get<Category[]>(this.urlCategoryPage, 
             {params: {

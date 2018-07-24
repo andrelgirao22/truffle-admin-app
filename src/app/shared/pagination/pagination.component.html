@@ -1,16 +1,21 @@
 
-<div class="box-footer clearfix">
+<div class="box-footer clearfix" *ngIf="page && totalElements && totalElements > 0">
   Linhas por pagina
 
   <select class="select2 select2-hidden-accessible"
           tabindex="-1" aria-hidden="true" (change)="linesSelected($event)">
       <option *ngFor="let lines of linesPerPage" [value]="lines">{{ lines }}</option>
   </select>  
-
-
+  
+ {{ showTotals() }}
+  
   <ul class="pagination pagination-sm no-margin pull-right">
-    <li><a (click)="firstPage()">&laquo;</a></li>
-    <li *ngFor="let page of getTotalPages()"><a (click)="loadPage(page)">{{ page }}</a></li>
-    <li><a (click)="lastPage()">&raquo;</a></li>
+    <li><a (click)="firstPage()"><i class="fa fa-angle-double-left"></i></a></li>
+    <li><a (click)="previousPage()"><i class="fa fa-angle-left"></i></a></li>
+    <li *ngFor="let page of pages" 
+      [class.active]="page == pageActive || (page == 1 && isFirstPage)">
+      <a (click)="loadPage(pageNumber.text);" #pageNumber>{{ page }}</a></li>
+    <li><a (click)="nextPage();" *ngIf="pageEnd != totalPages"><i class="fa fa-angle-right"></i></a></li>
+    <li><a (click)="lastPage()" *ngIf="pageEnd != totalPages"><i class="fa fa-angle-double-right"></i></a></li>
   </ul>
 </div>

@@ -11,6 +11,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { TextMaskModule } from 'angular2-text-mask';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { TextMaskModule } from 'angular2-text-mask';
     declarations: [
         InputComponent,
         SnackbarComponent,
-        PaginationComponent
+        PaginationComponent,
+        ModalComponent
     ],
     exports: [
         InputComponent,
@@ -32,7 +34,8 @@ import { TextMaskModule } from 'angular2-text-mask';
         FormsModule, 
         ReactiveFormsModule,
         CurrencyMaskModule,
-        TextMaskModule
+        TextMaskModule,
+        ModalComponent
     ]
 })
 export class SharedModule {

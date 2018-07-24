@@ -1,5 +1,5 @@
 import { Pagination } from './pagination.model';
-import { Component, OnInit, Output, Input, EventEmitter, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, AfterContentInit, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'truffle-adm-pagination',
@@ -7,28 +7,60 @@ import { Component, OnInit, Output, Input, EventEmitter, AfterContentInit } from
 })
 export class PaginationComponent implements OnInit {
 
+  amountPagesAvailable: number = 10
+  pageActive: number = 1
   size: number
-  linesPerPage: number [] = [5,10,50,100]
-  linesPerPageSelected: number = 5 
+  numberOfElements: number
+  linesPerPage: number [] = [10,50,100]
+  linesPerPageSelected: number = this.linesPerPage[0]
   totalElements: number
   totalPages: number
   isFirstPage: boolean
   isLastPage: boolean
 
-  pagination = new Pagination()
+  pages: string[] = []
 
+  pageStart: number = 0
+  pageEnd: number = 0
+  
   @Input() page: any
   @Output() load = new EventEmitter<Pagination>()
+
+  @ViewChild('pageNumber') pageNumber: ElementRef
+
+  pagination = new Pagination()
 
   constructor() {}
 
   ngOnInit() {
+    this.pagination.page = 0
     this.pagination.linesPerPage = this.linesPerPageSelected
     this.load.emit(this.pagination)
   }
 
   ngOnChanges() {
     this.loadValues()
+    this.setupPages()
+  }
+
+  
+  setupPages() {
+    
+    if(this.totalPages > 10) {
+      if(!this.pageEnd || this.pageEnd == 0) {
+        this.pageEnd = 10
+      }
+    } else {
+      this.pageEnd = this.totalPages
+    }
+    
+    console.log('pageend',  this.totalPages)
+
+    this.pages = []
+    for(let i = this.pageStart; i < this.pageEnd; i++) {
+      this.pages.push((i + 1) + "")
+    }
+  
   }
 
   loadValues() {
@@ -37,41 +69,69 @@ export class PaginationComponent implements OnInit {
       this.totalPages = this.page.totalPages
       this.isFirstPage = this.page.first
       this.isLastPage = this.page.last
-      console.log(this.totalElements)
-      console.log(this.totalPages)
-      console.log(this.isFirstPage)
-      console.log(this.isLastPage)
+      this.size = this.page.size
+      this.numberOfElements = this.page.numberOfElements
     }
   }
 
   linesSelected(event) {
-    this.linesPerPageSelected = event.target.value
-    this.pagination.linesPerPage = event.target.value
+    let value: number = event.target.value
+    
+    for(let i= 0; i< this.linesPerPage.length; i++) {
+      if(value == this.linesPerPage[i]) {
+        this.linesPerPageSelected = this.linesPerPage[i]
+        break    
+      }
+    }
+
     this.pagination.page = 0
+    this.pageActive = 1
+    this.pagination.linesPerPage = this.linesPerPageSelected
     this.load.emit(this.pagination)
   }
 
-  getTotalPages() {
-    let pages: string[] = []
-    if(this.totalPages) {
-      for(let i = 0; i < this.totalPages; i++) {
-        pages.push((i + 1) + "")
-      }
+  loadPage(_page: any) {
+    this.pageActive = _page
+    let pageSelectedOnPagination =  _page
+    if(_page <= this.totalPages) {
+      this.pagination.page = pageSelectedOnPagination - 1
+      this.pagination.linesPerPage = this.linesPerPageSelected
+      this.load.emit(this.pagination)
     }
-    return pages
   }
 
-  loadPage(_page: any) {
-    let pageSelected = _page - 1
-    console.log(pageSelected)
-    if(_page <= this.totalPages) {
-      this.pagination.page = pageSelected
+  nextPage() {
+    //this.pagesLength = this.pagesLength +this.amountPagesAvailable
+
+    this.pageStart = this.pageEnd
+    this.pageEnd += this.amountPagesAvailable
+    console.log('page start', this.pageStart)
+
+    this.pageActive = this.pageStart + 1
+    this.pagination.page = this.pageActive - 1
+    this.pagination.linesPerPage = this.linesPerPageSelected
+    this.load.emit(this.pagination)
+  }
+
+  previousPage() {
+    if(this.pageActive > 1) {
+
+      this.pageEnd = this.pageStart
+      this.pageStart -= this.amountPagesAvailable
+
+      this.pageActive = this.pageStart + 1
+      this.pagination.page = this.pageActive -1
       this.pagination.linesPerPage = this.linesPerPageSelected
       this.load.emit(this.pagination)
     }
   }
 
   firstPage() {
+
+    this.pageStart = 0
+    this.pageEnd = this.amountPagesAvailable
+
+    this.pageActive = 1
     this.pagination.page = 0
     this.pagination.linesPerPage = this.linesPerPageSelected
     this.load.emit(this.pagination)
@@ -79,11 +139,28 @@ export class PaginationComponent implements OnInit {
 
   lastPage() {
     if(this.totalPages) {
+
       let lastPage = this.totalPages - 1
+      this.pageActive = this.totalPages
+      
+      let rest = this.totalPages % this.amountPagesAvailable
+      this.pageStart = this.totalPages - rest
+      this.pageEnd = this.totalPages
+    
+      //backend
       this.pagination.page = lastPage
       this.pagination.linesPerPage = this.linesPerPageSelected
       this.load.emit(this.pagination)
     }
+  }
+
+  showTotals(): string {
+    let offset: number =  1+ (this.pageActive * this.linesPerPageSelected) - this.linesPerPageSelected
+    let size: number  = this.pageActive * this.numberOfElements
+    if(this.numberOfElements !== this.linesPerPageSelected) {
+      size = (this.pageActive * this.linesPerPageSelected) - (this.linesPerPageSelected - this.numberOfElements)
+    }
+    return `${offset} à ${size}  de Total ${this.totalElements }`
   }
 
 }

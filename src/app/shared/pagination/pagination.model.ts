@@ -5,4 +5,5 @@ export class Pagination {
     linesPerPage: number = 24
     orderby: string = 'name'
     direction: string  = 'ASC'
+    size: number = 0
 }

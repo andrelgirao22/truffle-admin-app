@@ -144,9 +144,6 @@ export class ItemDetailComponent implements OnInit {
       let msg: string = this.itemForm.value.id ? "alterado" : "incluído"
       this.itemService.setMessage(`Item ${item.description} ${msg} com sucesso`)
     })
-
-    
-
   }
 
   addPrice() {

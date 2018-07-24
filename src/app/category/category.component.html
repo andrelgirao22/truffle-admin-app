@@ -39,7 +39,7 @@
           <tr *ngFor="let category of categories">
             <td>{{ category.id }}</td>
             <td>{{ category.name }}</td>
-            <td>{{ category.imageUrl }}</td>
+            <td>{{ category?.imageUrl }}</td>
             <td>{{ category.date  | date:'dd/MM/yyyy' }}</td>
             <td width="25">
               <a [routerLink]="['categoryDetail', category.id]"><i class="fa fa-pencil"></i></a>
