@@ -158,10 +158,12 @@ export class ItemDetailComponent implements OnInit {
   }
 
   deletePrice() {
+    
     if(this.priceSelected) {
-      let index = this.itemForm.value.prices.indexOf(this.priceSelected)
+      let index = this.prices.indexOf(this.priceSelected)
       if(index > -1) {
-        this.itemForm.value.prices.slice(index, 1)
+        this.prices.splice(index, 1)
+        this.itemForm.value.prices.splice(index, 1)
       }
     }
   }
