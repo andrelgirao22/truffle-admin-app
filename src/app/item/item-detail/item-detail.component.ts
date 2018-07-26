@@ -1,8 +1,6 @@
-import { TRUFFLE_API } from './../../truffle.adm.api';
+
 import { Pagination } from './../../shared/pagination/pagination.model';
-import { state } from '@angular/animations';
 import { Category } from './../../category/category.model';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ItemService } from './../item.service';
@@ -11,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 import { Price } from '../price.model';
 import { CategoryService } from '../../category/category.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { Moment } from '../../../../node_modules/moment';
 
 @Component({
   selector: 'truffle-adm-item-detail',
@@ -21,6 +20,8 @@ export class ItemDetailComponent implements OnInit {
 
   selectedFile: File
   imageSelected: any
+
+  dateSelected: {startDate: Moment, endDate: Moment};
 
   categories: Category[] = []
   priceTypes: any [] = []
@@ -34,7 +35,6 @@ export class ItemDetailComponent implements OnInit {
   numberPattern = /^[0-9]*$/
 
   mask: any[] = ['+', '1', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-
 
   constructor(
     private itemService: ItemService,
@@ -50,11 +50,13 @@ export class ItemDetailComponent implements OnInit {
     this.loadPriceTypes()
   }
 
+
   setupForm() {
 
     this.priceForm = this.formBuilder.group({
       typePrice: '',
       price: '',
+      dates: this.formBuilder.control('', Validators.required),
       dtStart: '',
       dtEnd: ''
     })
@@ -91,14 +93,12 @@ export class ItemDetailComponent implements OnInit {
         this.prices.forEach(price => {
           this.itemForm.value.prices.push(price)
         })
-
-        /*this.itemForm.value.status = res.status*/
       }) 
     }
   }
 
   loadCategories() {
-    let pagination = new Pagination()
+    //let pagination = new Pagination()
     this.categoryService.getAllCategories().subscribe(_categories => {
       this.categories = _categories
     }, error => console.log(error))
@@ -151,6 +151,8 @@ export class ItemDetailComponent implements OnInit {
     let price = new Price()
     price.typePrice = this.priceForm.value.typePrice
     price.price = this.priceForm.value.price
+    price.dtStart = this.priceForm.value.dtStart
+    price.dtEnd = this.priceForm.value.dtEnd
     this.prices.push(price)
     
     this.itemForm.value.prices.push(price)
@@ -186,6 +188,15 @@ export class ItemDetailComponent implements OnInit {
     }
 
     reader.readAsDataURL(this.selectedFile)
+  }
+
+  changeDate(event: any) {
+    console.log(this.dateSelected)
+    let startDate = this.dateSelected.startDate
+    let endDate = this.dateSelected.endDate
+
+    this.priceForm.controls.dtStart.setValue(startDate)
+    this.priceForm.controls.dtEnd.setValue(endDate)
   }
 
 }

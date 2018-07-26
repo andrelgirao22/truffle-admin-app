@@ -13,13 +13,16 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { TextMaskModule } from 'angular2-text-mask';
 import { ModalComponent } from './modal/modal.component';
 
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         CurrencyMaskModule,
-        TextMaskModule
+        TextMaskModule,
+        NgxDaterangepickerMd
     ],
     declarations: [
         InputComponent,
@@ -35,6 +38,7 @@ import { ModalComponent } from './modal/modal.component';
         ReactiveFormsModule,
         CurrencyMaskModule,
         TextMaskModule,
+        NgxDaterangepickerMd,
         ModalComponent
     ]
 })

@@ -53,7 +53,7 @@ export class MenuComponent implements OnInit {
     this.router.navigateByUrl('/login')
   }
 
-  loggout() {
+  logout() {
     this.menuItemSelected = undefined
     this.loginService.logout()
     this.router.navigateByUrl('/login')

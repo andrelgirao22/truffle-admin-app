@@ -79,7 +79,10 @@
                                 <div class="input-group-addon">
                                   <i class="fa fa-calendar"></i>
                                 </div>
-                                <input class="form-control pull-right" name="date"  id="reservation" type="text" formControlName="dtStart">
+                                <input class="form-control pull-right" ngxDaterangepickerMd (change)="changeDate($event)"
+                                        [(ngModel)]="dateSelected"
+                                        [locale]="{applyLabel: 'Aplicar', cancelLabel: 'Cancelar', format: 'DD/MM/YYYY'}"
+                                         type="text" formControlName="dates">
                               </div>
                         </truffle-adm-input>
                         {{ priceForm.value | json }}
@@ -154,7 +157,6 @@
             </div>
         </div>
   </div>
-    {{itemForm.value | json }}
     </form>
   </div>
 </section>

@@ -21,8 +21,6 @@ import { MenuModule } from './menu/menu.module';
 import { OrderComponent } from './order/order.component';
 import { AccountComponent } from './account/account.component';
 
-import { TextMaskModule } from 'angular2-text-mask';
-
 registerLocaleData(localePt, 'pt-BR');
 
 @NgModule({
