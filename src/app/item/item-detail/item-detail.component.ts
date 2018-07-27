@@ -1,5 +1,4 @@
 
-import { Pagination } from './../../shared/pagination/pagination.model';
 import { Category } from './../../category/category.model';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -8,8 +7,9 @@ import { Item } from './../item.model';
 import { Component, OnInit } from '@angular/core';
 import { Price } from '../price.model';
 import { CategoryService } from '../../category/category.service';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Moment } from '../../../../node_modules/moment';
+import * as moment from "moment";
 
 @Component({
   selector: 'truffle-adm-item-detail',
@@ -52,11 +52,10 @@ export class ItemDetailComponent implements OnInit {
 
 
   setupForm() {
-
     this.priceForm = this.formBuilder.group({
       typePrice: '',
       price: '',
-      dates: this.formBuilder.control('', Validators.required),
+      dates: '',
       dtStart: '',
       dtEnd: ''
     })
@@ -70,6 +69,10 @@ export class ItemDetailComponent implements OnInit {
       imageUrl: this.formBuilder.control(''),
       prices: this.formBuilder.array([])
     })
+  }
+
+  resetPriceForm() {
+    this.priceForm.reset()
   }
 
   loadItem() {
@@ -194,7 +197,10 @@ export class ItemDetailComponent implements OnInit {
     console.log(this.dateSelected)
     let startDate = this.dateSelected.startDate
     let endDate = this.dateSelected.endDate
-
+    
+    //console.log('date end',moment(endDate).subtract(1, 'days'))
+    
+    
     this.priceForm.controls.dtStart.setValue(startDate)
     this.priceForm.controls.dtEnd.setValue(endDate)
   }

@@ -17,14 +17,16 @@
               <p class="lead">Dados</p>
             </div>
 
-            <div class="col-sm-12 col-md-6 col-xs-12">               
+            <div class="col-sm-12 col-md-6 col-xs-12">
               <truffle-adm-input label="Nome" errorMessage="Campo Obrigatório (informe um mínimo de 5 caracteres)" [noHelpBlock]="true">
-                <input type="text" class="form-control"placeholder="Nome" formControlName="name">
+                <label for="itemName">Nome</label>
+                <input type="text" class="form-control" id="itemName" placeholder="Nome" formControlName="name">
               </truffle-adm-input>
             </div>
             <div class="col-sm-12 col-md-6 col-xs-12">
               <truffle-adm-input label="Categoria" errorMessage="Campo Requerido" [noHelpBlock]="true">
-                  <select class="form-control select2 select2-hidden-accessible" placeholer="Tipo"
+                  <label for="category">Categoria</label>
+                  <select class="form-control select2 select2-hidden-accessible" placeholer="Tipo" id="category"
                       formControlName="category" style="width: 100%;" tabindex="-1" 
                       aria-hidden="true" (change)="selectCategory(itemForm.value.category)">
                     <option disabled selected value>Selecione uma categoria</option> 
@@ -35,10 +37,15 @@
 
             <div class="col-sm-12 col-md-12 col-xs-12">
               <truffle-adm-input label="Descrição" errorMessage="Campo Obrigatório (informe um mínimo de 5 caracteres)" [noHelpBlock]="true">
-                  <input type="text" class="form-control" formControlName="description" placeholder="Descrição">
+                  <label for="itemDescription">Descrição</label>
+                  <input type="text" class="form-control" id="itemDescription" formControlName="description" placeholder="Descrição">
               </truffle-adm-input> 
             </div>
             
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label for="">Preços</label>
+            </div>
+
             <div class="col-md-12 col-sm-12 col-xs-12">
               <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">
                 <i class="fa fa-plus my-float"></i> Preço
@@ -61,20 +68,23 @@
                       <form  [formGroup]="priceForm" novalidate>
                 
                         <truffle-adm-input label="Tipo Preço" errorMessage="Campo Requerido" [noHelpBlock]="true">
+                          <label for="tipoPreco">Tipo de Preço</label>
                           <select class="form-control select2 select2-hidden-accessible" placeholer="Tipo"
                                   formControlName="typePrice" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
-                              <option disabled selected value>Tipo de Preço</option>   
-                              <option *ngFor="let type of priceTypes" [value]="type">{{ type }}</option>
+                              <option disabled selected value>Selecione um tipo</option>   
+                              <option *ngFor="let type of priceTypes" id="tipoPreco" [value]="type">{{ type }}</option>
                           </select>  
                         </truffle-adm-input>
 
                         <truffle-adm-input label="Preço" errorMessage="Informe somente números" [noHelpBlock]="true">
-                          <input class="form-control" formControlName="price" placeholder="Preço" required autocomplete="off"
+                          <label for="price">Preço (R$)</label>
+                          <input class="form-control" formControlName="price" placeholder="Preço" id="price" required autocomplete="off"
                               currencyMask  
                               [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"/>
                         </truffle-adm-input>
 
-                        <truffle-adm-input label="Data Inicio" errorMessage="" [noHelpBlock]="true">
+                        <truffle-adm-input label="Data Inicio" [noHelpBlock]="false">
+                            <label for="dateRange">Data de Vigência</label>
                             <div class="input-group">
                                 <div class="input-group-addon">
                                   <i class="fa fa-calendar"></i>
@@ -82,10 +92,9 @@
                                 <input class="form-control pull-right" ngxDaterangepickerMd (change)="changeDate($event)"
                                         [(ngModel)]="dateSelected"
                                         [locale]="{applyLabel: 'Aplicar', cancelLabel: 'Cancelar', format: 'DD/MM/YYYY'}"
-                                         type="text" formControlName="dates">
+                                         type="text" formControlName="dates" id="dateRange">
                               </div>
                         </truffle-adm-input>
-                        {{ priceForm.value | json }}
                       </form>
                       <div class="modal-footer"> 
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -108,10 +117,8 @@
                 <tbody>
                   <tr *ngFor="let price of prices">
                     <td>{{ price?.typePrice }}</td>
-                    <td><span class="pull-right">{{ price?.price | currency: 'BRL': true }}</span></td>
                     <td>
-                      <a [routerLink]="['/priceDetail', price.id]"><i class="fa fa-pencil"></i></a>
-                    </td>
+                      <span class="pull-right">{{ price?.price | currency: 'BRL': true }}</span></td>
                     <td>
                       <a (click)="selectPrice(price)" data-toggle="modal" data-target="#priceModal"><i class="fa fa-remove"></i></a>
                     </td>
@@ -140,8 +147,8 @@
 
             <div class="col-sm-12 col-md-4 col-xs-12">
               <truffle-adm-input label="Imagem" errorMessage="Campo Obrigatório" [noHelpBlock]="false">
-                  <label for="exampleInputFile">Imagem</label>
-                  <input type="file" (change)="onFileSelected($event)" formControlName="image" placeholder="Imagem">
+                  <label for="itemImage">Imagem</label>
+                  <input type="file" id="itemImage" (change)="onFileSelected($event)" formControlName="image" placeholder="Imagem">
               </truffle-adm-input>
             </div>
 
