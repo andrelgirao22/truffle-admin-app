@@ -22,6 +22,8 @@ export class ItemComponent implements OnInit {
   searchForm: FormGroup
   searchControlForm: FormControl
 
+  pagination: Pagination
+
   constructor(
       private itemService: ItemService,
       private formBuilder: FormBuilder) { }
@@ -42,8 +44,9 @@ export class ItemComponent implements OnInit {
   }
 
   loadItens(pagination: Pagination) {
-    pagination.orderby = "id"
-    this.itemService.getItens(pagination).subscribe(_page => {
+    this.pagination = pagination
+    this.pagination.orderby = "id"
+    this.itemService.getItens(this.pagination).subscribe(_page => {
       this.page = _page
       this.itens = _page.content
       console.log(this.itens)
@@ -64,10 +67,12 @@ export class ItemComponent implements OnInit {
   delete() {
     console.log(this.itemSelected)
     this.itemService.delete(this.itemSelected.id).subscribe(res => {
-      console.log(res)
-      let pagination = new Pagination()
-      pagination.linesPerPage = 5
-      this.loadItens(pagination)
+
+      this.itemService.deletePicture(this.itemSelected.id).subscribe(res=> {
+
+      }, error => {})
+      
+      this.loadItens(this.pagination)
     })
   }
 

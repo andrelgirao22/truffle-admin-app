@@ -22,6 +22,8 @@ export class CategoryComponent implements OnInit {
   searchForm: FormGroup
   searchControl: FormControl
 
+  pagination:Pagination
+
   page: any
 
   constructor(
@@ -47,8 +49,9 @@ export class CategoryComponent implements OnInit {
   }
 
   loadCategories(pagination: Pagination, seach?: string) { 
-    pagination.orderby = "id"
-    this.categoryService.getCategories(pagination, seach).subscribe(_page => {
+    this.pagination = pagination
+    this.pagination.orderby = "id"
+    this.categoryService.getCategories(this.pagination, seach).subscribe(_page => {
       if(_page) {
         this.page = _page
         this.categories = _page.content
@@ -67,9 +70,8 @@ export class CategoryComponent implements OnInit {
   deleteCategory() {
     this.categoryService.delete(this.categorySelected.id).subscribe(res => {
       this.notificationService.notify(`Categoria excluida com sucesso ${this.categorySelected.name}`)
-      let pagination = new Pagination()      
-      pagination.linesPerPage = 5
-      this.loadCategories(pagination)
+      
+      this.loadCategories(this.pagination)
 
       this.categoryService.deletePicture(this.categorySelected.id).subscribe(res=> {
         console.log('image deleted')

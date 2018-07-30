@@ -70,6 +70,10 @@ export class ItemService {
         return this.http.delete<Item>(`${this.url}/${id}`, {headers: this.getHeaders()})
     }
 
+    deletePicture(id: number) {
+        return this.http.delete<Item>(`${this.url}/picture/${id}`, {headers: this.getHeaders()})
+    }
+
     getHeaders() {
         return new HttpHeaders()
             .set('Authorization','Bearer ' + this.loginService.getLocalStorage().getItem('access_token'))
