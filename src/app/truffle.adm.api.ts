@@ -1,4 +1,5 @@
+import { environment } from './../environments/environment.prod';
 export const TRUFFLE_API = {
-    baseUrl: "http://localhost:8080",
-    basePictureUrl: "https://s3-sa-east-1.amazonaws.com/truffle-app"
+    baseUrl: environment.api,
+    basePictureUrl: environment.bucket_img
 }
