@@ -1,5 +1,3 @@
-
-
 <div class="row">
     <div class="col-xs-12 col-md-12">
       <div class="box">
@@ -11,31 +9,54 @@
           <div *ngIf="orders.length === 0">
             <p>Não há Pedidos</p>
           </div>
+
+          <form class="row" [formGroup]="searchForm">
+            <div class="col-xs-8">
+              
+            </div>
+            <div class="col-xs-4">
+              <truffle-adm-input [noHelpBlock]="false">
+                  <input type="text" class="form-control" formControlName="search" 
+                          placeholder="Pesquisar" autocomplete="off">
+                  <span class="fa fa-search form-control-feedback"></span>
+              </truffle-adm-input>
+            </div>
+          </form>
   
-          <table class="table table-bordered" *ngIf="orders.length > 0">
+          <table class="table table-bordered table-striped" *ngIf="orders.length > 0">
             <tr>
               <th style="width: 10px">Nº</th>
               <th>Cliente</th>
+              <th>Email</th>
+              <th>Data</th>
               <th>Valor</th>
               <th>Situação</th>
-              <th>Ações</th>
+              <th colspan="2">Ações</th>
             </tr>
             <tr *ngFor="let order of orders">
               <td>{{ order.id }}</td>
               <td>{{ order.account.name }}</td>
-              <td>{{ order.orderValue | currency: 'BRL': true }}</td>
-              <td>
-                <div class="box-tools pull-center">
+              <td>{{ order.account.email }}</td>
+              <td width="30">{{ order.date  | date:'dd/MM/yyyy' }}</td>
+              <td width="30" align="right">{{ order.orderValue | currency: 'BRL': true }}</td>
+              <td width="30">
+                <div class="box-tools">
                     <span class="label"
-                          [class.label-success]="order.status === 'RECEBIDO'"
-                          [class.label-success]="order.status === 'PREPARANDO'"
-                          [class.label-success]="order.status === 'PRONTO'" 
-                          [class.label-success]="order.status === 'CONCLUIDO'" 
-                          [class.label-danger] ="order.status === 'PENDENTE'">{{ order.status }}</span>
+                          [class.label-danger] ="isPeding(order)"
+                          [class.label-warning]="isDoing(order)"
+                          [class.label-info]="isDone(order)" 
+                          [class.label-success]="isClosed(order)">{{ order.status }}</span>
                 </div>
               </td>
-              <td>
-                
+              <td width="25">
+                <a [routerLink]="['orderDetail', order.id]"><i class="fa fa-eye"></i></a>
+              </td>
+              <td width="25">
+                <a (click)="changeStatus(order)"><i class="fa" 
+                    [class.fa-exclamation-circle]="isPeding(order)"
+                    [class.fa-clock-o]="isDoing(order)"
+                    [class.fa-check-square-o]="isDone(order)"
+                    [class.fa-check-square]="isClosed(order)"></i></a>
               </td>
             </tr>
             

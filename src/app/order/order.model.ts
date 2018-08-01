@@ -8,6 +8,7 @@ class Order {
     payments: Payment[]
     account: Account
     date: Date
+    status: string
 }
 
 class OrderItem {
