@@ -1,7 +1,9 @@
 import { LoginService } from './../login/login.service';
 import { Router } from '@angular/router';
 import { Menu, MenuItem } from './menu.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import { OrderNotifyService } from '../order/order.notifity.service';
+import { Order } from '../order/order.model';
 
 @Component({
   selector: 'truffle-adm-menu',
@@ -10,6 +12,7 @@ import { Component, OnInit } from '@angular/core';
 export class MenuComponent implements OnInit {
 
   username: string
+  orders: Order[] = []
 
   menus: Menu[] = [
     {name: 'Cadastro', icon: 'fa fa-database', itemMenu: [
@@ -28,7 +31,8 @@ export class MenuComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private loginService: LoginService) { }
+    private loginService: LoginService,
+    private orderNotifyService: OrderNotifyService) { }
 
   ngOnInit() {
     this.loginService.emitterLoggerIn.subscribe(_isLoggerIn => {
@@ -38,6 +42,10 @@ export class MenuComponent implements OnInit {
     if(!this.username && this.loginService.isLoggedIn()) {
       this.username = this.loginService.getLocalStorage().getItem("username")
     }
+
+    this.orderNotifyService.orderNotify.subscribe(_orders => {
+      this.orders = _orders
+    })
   }
 
   isLoggedIn(): boolean {
@@ -57,5 +65,21 @@ export class MenuComponent implements OnInit {
     this.menuItemSelected = undefined
     this.loginService.logout()
     this.router.navigateByUrl('/login')
+  }
+
+  hasOrderToNotify(): boolean {
+    return this.orders.filter(_order => _order.status === 'PENDENTE' || _order.status === 'PREPARANDO').length > 0
+  }
+
+  getCountOrder(): number {
+    return this.orders.filter(_order => _order.status === 'PENDENTE' || _order.status === 'PREPARANDO').length
+  }
+
+  getCountPendingOrders(): number {
+    return this.orders.filter(_order => _order.status === 'PENDENTE').length
+  }
+
+  getCountDoingOrders(): number {
+    return this.orders.filter(_order => _order.status === 'PREPARANDO').length
   }
 }

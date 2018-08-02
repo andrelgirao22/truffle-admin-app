@@ -19,6 +19,7 @@ import { registerLocaleData } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { MenuModule } from './menu/menu.module';
 import { AccountComponent } from './account/account.component';
+import { OrderNotifyService } from './order/order.notifity.service';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -41,7 +42,8 @@ registerLocaleData(localePt, 'pt-BR');
     {provide:LOCALE_ID, useValue: "pt-BR" },
     NotificationService,
     LoggedInGuard,
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    OrderNotifyService
   ],
   bootstrap: [AppComponent]
 })
