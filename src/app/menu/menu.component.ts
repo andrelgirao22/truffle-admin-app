@@ -4,6 +4,7 @@ import { Menu, MenuItem } from './menu.model';
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { OrderNotifyService } from '../order/order.notifity.service';
 import { Order } from '../order/order.model';
+import { TaskService } from '../shared/tasks/task.service';
 
 @Component({
   selector: 'truffle-adm-menu',
@@ -32,7 +33,8 @@ export class MenuComponent implements OnInit {
   constructor(
     private router: Router,
     private loginService: LoginService,
-    private orderNotifyService: OrderNotifyService) { }
+    private orderNotifyService: OrderNotifyService,
+    private taskService: TaskService) { }
 
   ngOnInit() {
     this.loginService.emitterLoggerIn.subscribe(_isLoggerIn => {
@@ -46,6 +48,8 @@ export class MenuComponent implements OnInit {
     this.orderNotifyService.orderNotify.subscribe(_orders => {
       this.orders = _orders
     })
+
+    this.taskService.checkOrder()
   }
 
   isLoggedIn(): boolean {

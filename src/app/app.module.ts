@@ -20,6 +20,7 @@ import { HomeComponent } from './home/home.component';
 import { MenuModule } from './menu/menu.module';
 import { AccountComponent } from './account/account.component';
 import { OrderNotifyService } from './order/order.notifity.service';
+import { OrderService } from './order/order.service';
 
 registerLocaleData(localePt, 'pt-BR');
 

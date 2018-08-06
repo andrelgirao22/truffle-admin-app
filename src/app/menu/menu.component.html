@@ -18,7 +18,7 @@
 
     <div class="navbar-custom-menu" *ngIf="isLoggedIn()">
       <ul class="nav navbar-nav">
-        <li class="dropdown notifications-menu" [class.open]="hasOrderToNotify()" >
+        <li class="dropdown notifications-menu"  >
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
             <i class="fa fa-bell-o"></i>
             <span class="label label-warning" *ngIf="hasOrderToNotify()">{{  getCountOrder() }}</span>

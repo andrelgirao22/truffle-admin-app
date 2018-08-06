@@ -9,6 +9,8 @@ export const ROUTES: Routes = [
   {path: '', component: OrderComponent }
 ]
 
+console.log('Modulo Order Carregado')
+
 @NgModule({
   imports: [
     CommonModule,
@@ -22,4 +24,8 @@ export const ROUTES: Routes = [
     OrderService
   ]
 })
-export class OrderModule { }
+export class OrderModule {
+
+  constructor() {}
+
+}

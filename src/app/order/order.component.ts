@@ -1,3 +1,5 @@
+import { NotificationService } from './../shared/messages/notification.service';
+import { OrderNotifyService } from './order.notifity.service';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { OrderService } from './order.service';
 import { Pagination } from './../shared/pagination/pagination.model';
@@ -20,6 +22,8 @@ export class OrderComponent implements OnInit {
  
   constructor(
     private orderService: OrderService,
+    private orderNotifyService: OrderNotifyService,
+    private notificationService: NotificationService,
     private formBuilder: FormBuilder){}
 
   ngOnInit() {
@@ -45,6 +49,7 @@ export class OrderComponent implements OnInit {
       if(_page) {
         this.page = _page
         this.orders = _page.content
+        this.orderNotifyService.notify(this.orders)
       }
 
     }, error =>{
@@ -62,6 +67,12 @@ export class OrderComponent implements OnInit {
       case "PREPARANDO": _order.status = "PRONTO"; break;
       case "PRONTO": _order.status = "FECHADO"; break;
     }
+
+    this.orderService.setOrder(_order).subscribe(data => {
+      this.notificationService.notify(`Status do Pedido alterado para ${_order.status}`)
+    },  error => {
+      this.notificationService.notify(`Problemas para altera o Status do Pedido: ${error}`)
+    })
     
   }
 

@@ -9,14 +9,14 @@ import { LoginService } from '../login/login.service';
 @Injectable()
 export class OrderService {
 
-    url: string = `${TRUFFLE_API.baseUrl}/order/page`
+    url: string = `${TRUFFLE_API.baseUrl}`
 
     constructor(
         private http: HttpClient,
         private loginService: LoginService) {}
 
     getOrder(pagination: Pagination, search?:string):Observable<any> {
-        return this.http.get<Order>(this.url,
+        return this.http.get<Order>(`${this.url}/order/page`,
         {headers: this.getHeaders(),
             params: {
                 page: `${pagination.page}`,
@@ -28,9 +28,9 @@ export class OrderService {
         })
     }
 
-    setOrder(order: Order) {
+    setOrder(order: Order): Observable<any> {
         let httpHeaders = this.getHttpOptions()
-        this.http.put(this.url, JSON.stringify(order), httpHeaders)
+        return this.http.put(`${this.url}/${order.id}`, JSON.stringify(order), httpHeaders)
     }
 
 

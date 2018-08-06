@@ -1,3 +1,4 @@
+import { OrderService } from './../order/order.service';
 import { LoggedInGuard } from './../login/logged.in.guard';
 import { ItemService } from './../item/item.service';
 import { CategoryService } from './../category/category.service';
@@ -10,10 +11,10 @@ import { InputComponent } from "./input/input.component";
 import { PaginationComponent } from './pagination/pagination.component';
 
 import { CurrencyMaskModule } from 'ng2-currency-mask';
-import { TextMaskModule } from 'angular2-text-mask';
 import { ModalComponent } from './modal/modal.component';
 
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { TaskService } from './tasks/task.service';
 
 @NgModule({
     imports: [
@@ -21,7 +22,6 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
         FormsModule,
         ReactiveFormsModule,
         CurrencyMaskModule,
-        TextMaskModule,
         NgxDaterangepickerMd
     ],
     declarations: [
@@ -37,7 +37,6 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
         FormsModule, 
         ReactiveFormsModule,
         CurrencyMaskModule,
-        TextMaskModule,
         NgxDaterangepickerMd,
         ModalComponent
     ]
@@ -51,7 +50,9 @@ export class SharedModule {
                 LoginService,
                 CategoryService,
                 ItemService,
-                LoggedInGuard
+                LoggedInGuard,
+                TaskService,
+                OrderService
             ]
         }
     }

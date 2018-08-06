@@ -3,6 +3,7 @@ import { Account } from '../account/account.model';
 
 class Order {
     
+    id: number
     orderValue: number
     orderItens: OrderItem[]
     payments: Payment[]
