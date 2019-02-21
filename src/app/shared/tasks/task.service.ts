@@ -14,14 +14,14 @@ export class TaskService {
     ) {}
 
 
-    public checkOrder() {
-        let pagination = new Pagination()
+    public checkPendingOrder() {
+        /*let pagination = new Pagination()
         pagination.linesPerPage = 10
         pagination.orderby = "id"
         this.orderService.getOrder(pagination).subscribe(data => {
             if(data) {
                 this.orderNotifyService.notify(data.content)
             }
-        }, error => {})
+        }, error => {})*/
     }
 }

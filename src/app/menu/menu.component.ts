@@ -49,7 +49,7 @@ export class MenuComponent implements OnInit {
       this.orders = _orders
     })
 
-    this.taskService.checkOrder()
+    this.taskService.checkPendingOrder()
   }
 
   isLoggedIn(): boolean {

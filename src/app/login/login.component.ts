@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
       this.loginService.setSession(user)
       this.message = ""
       this.router.navigateByUrl('/')
-      this.notificationService.notify(`Bem vindo ${user.account.name}`) 
+      this.notificationService.notify(`Bem vindo ${user.email}`) 
     },
     error => {
       if(error) {

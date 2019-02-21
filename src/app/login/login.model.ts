@@ -2,7 +2,7 @@ import { Account } from "../account/account.model";
 
 export interface Login {
 
-    account: Account
+    email: string
     access_token: string
     expires_in: number
 
