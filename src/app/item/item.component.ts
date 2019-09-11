@@ -70,7 +70,9 @@ export class ItemComponent implements OnInit {
 
       this.itemService.deletePicture(this.itemSelected.id).subscribe(res=> {
 
-      }, error => {})
+      }, error => {
+        this.itemService.setMessage(`Operação não permitida ${error}`)
+      })
       
       this.loadItens(this.pagination)
     })

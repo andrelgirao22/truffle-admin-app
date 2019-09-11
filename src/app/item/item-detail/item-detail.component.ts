@@ -41,7 +41,8 @@ export class ItemDetailComponent implements OnInit {
     private categoryService: CategoryService,
     private activedRouter: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder) { 
+    }
 
   ngOnInit() {
     this.setupForm()
@@ -82,7 +83,7 @@ export class ItemDetailComponent implements OnInit {
       this.itemService.getItem(id).subscribe(res => {
 
         this.prices = res.prices
-
+        debugger
         this.itemForm.patchValue({
           id: res.id,
           name: res.name,

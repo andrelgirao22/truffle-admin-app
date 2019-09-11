@@ -51,7 +51,7 @@
                 <i class="fa fa-plus my-float"></i> Preço
               </button>
 
-              <p *ngIf="prices.length === 0"><b>Não há Preços para o item</b></p>
+              <p *ngIf="prices?.length === 0"><b>Não há Preços para o item</b></p>
             </div>
 
             <div class="row"></div>
@@ -106,7 +106,7 @@
               </div>
               
               <table class="table table-bordered" 
-                    *ngIf="prices.length > 0">
+                    *ngIf="prices?.length > 0">
                 <thead>
                   <tr>
                     <th>Tipo Preço</th>
@@ -160,7 +160,7 @@
             <div class="col-sm-2 col-xs-12 pull-left">
                 <button class="btn btn-primary btn-block"
                         (click)="save()"
-                        [disabled]="!itemForm.valid || prices.length === 0">Gravar</button>
+                        [disabled]="!itemForm.valid || prices?.length === 0">Gravar</button>
             </div>
         </div>
   </div>
