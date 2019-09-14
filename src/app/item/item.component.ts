@@ -80,7 +80,7 @@ export class ItemComponent implements OnInit {
 
   setStatus(item: Item) {
     item.status = item.status === 'PUBLICADO' ? "PENDENTE" : "PUBLICADO"
-    this.itemService.addItem(item).subscribe(res => {
+    this.itemService.update(item).subscribe(res => {
       this.itemService.setMessage(`Status do item mudou para ${item.status}`)
     }, 
     error => {

@@ -1,3 +1,4 @@
+import { TRUFFLE_API } from './../../truffle.adm.api';
 
 import { Category } from './../../category/category.model';
 import { Router } from '@angular/router';
@@ -9,7 +10,10 @@ import { Price } from '../price.model';
 import { CategoryService } from '../../category/category.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Moment } from '../../../../node_modules/moment';
-import * as moment from "moment";
+import { DomSanitizer } from '@angular/platform-browser';
+import { ImageUtilService } from '../../services/image-util.service';
+
+const defaultPathImage: string = "assets/images/150x100.png"
 
 @Component({
   selector: 'truffle-adm-item-detail',
@@ -18,7 +22,6 @@ import * as moment from "moment";
 })
 export class ItemDetailComponent implements OnInit {
 
-  selectedFile: File
   imageSelected: any
 
   dateSelected: {startDate: Moment, endDate: Moment};
@@ -30,7 +33,10 @@ export class ItemDetailComponent implements OnInit {
   categorySelected: Category = new Category()
 
   itemForm: FormGroup
+  imageForm: FormGroup
   priceForm: FormGroup
+
+  images: any [] = [defaultPathImage, defaultPathImage, defaultPathImage]
 
   numberPattern = /^[0-9]*$/
 
@@ -39,9 +45,11 @@ export class ItemDetailComponent implements OnInit {
   constructor(
     private itemService: ItemService,
     private categoryService: CategoryService,
-    private activedRouter: ActivatedRoute,
+    private activatedRouter: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder) { 
+    private formBuilder: FormBuilder,
+    private sanitizer: DomSanitizer,
+    private imageUtilService: ImageUtilService) { 
     }
 
   ngOnInit() {
@@ -49,6 +57,7 @@ export class ItemDetailComponent implements OnInit {
     this.loadCategories()
     this.loadItem()
     this.loadPriceTypes()
+    this.loadImages()
   }
 
 
@@ -70,6 +79,10 @@ export class ItemDetailComponent implements OnInit {
       imageUrl: this.formBuilder.control(''),
       prices: this.formBuilder.array([])
     })
+
+    this.imageForm = this.formBuilder.group({
+      file: this.formBuilder.control(null)
+    })
   }
 
   resetPriceForm() {
@@ -78,12 +91,11 @@ export class ItemDetailComponent implements OnInit {
 
   loadItem() {
 
-    let id: string = this.activedRouter.snapshot.params['id']
+    let id: string = this.activatedRouter.snapshot.params['id']
     if(id) {
       this.itemService.getItem(id).subscribe(res => {
 
         this.prices = res.prices
-        debugger
         this.itemForm.patchValue({
           id: res.id,
           name: res.name,
@@ -113,6 +125,28 @@ export class ItemDetailComponent implements OnInit {
       this.priceTypes = types
     })
   }
+
+  loadImages() {
+
+    for(let i = 0 ; i < 3; i++) {
+      let id: string = this.activatedRouter.snapshot.params['id']
+      
+      //let imageName = `${TRUFFLE_API.basePictureUrl}/pro-${id}-${i}.png`
+
+      this.itemService.getImage(id, `${i}`).subscribe(res => {
+        console.log('image',res)
+        debugger
+
+        let reader = new FileReader()
+        let mySrc = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + reader.readAsDataURL(res.body));
+        this.images[i] = mySrc
+      }, error => {
+        console.log(error)
+      })
+
+    }
+
+  }
   
   save() {
 
@@ -125,28 +159,46 @@ export class ItemDetailComponent implements OnInit {
     item.prices = this.itemForm.value.prices
     item.imageUrl = this.itemForm.value.imageUrl
     
-    const fd = new FormData()
-    fd.append('file', this.selectedFile)
+    let id: string = this.activatedRouter.snapshot.params['id']
 
-    this.itemService.addItem(item).subscribe(res => {
+    if(id) {
+      this.itemService.update(item).subscribe(res => {
 
-      if(!item.id) {
-        let location = res.headers.get('location')
-        let id = location.substring(location.lastIndexOf('/') + 1)
-        item.id = id
-      }
+        this.sendImage(id)
+        this.showAlert()
+      }, error=> {
+        this.itemService.setMessage(`Problemas ao salvar item ${error}`)
+      })
+    } else {
+      this.itemService.insert(item).subscribe(res => {
 
-      if(this.selectedFile) {
-        this.itemService.sendImage(fd, item.id + "").subscribe(res => {
-          this.itemService.setMessage(`Image incluida com sucesso`)
-        }, error => {
-          this.itemService.setMessage(`Problemas ao gravar imagens: ${error.error.message}`)
-        } )
-      }
+        let id: string = res.headers["location"]["id"]
 
-      this.router.navigate(['/item'])
-      let msg: string = this.itemForm.value.id ? "alterado" : "incluído"
-      this.itemService.setMessage(`Item ${item.description} ${msg} com sucesso`)
+        this.sendImage(id)
+        this.showAlert()
+      }, error=> {
+        this.itemService.setMessage(`Problemas ao salvar item ${error}`)
+      })
+    }
+  }
+
+
+  showAlert() {
+    let msg: string = this.itemForm.value.id ? "alterado" : "incluído"
+    this.itemService.setMessage(`Item ${msg} com sucesso`)
+    this.router.navigate(['/item'])
+  }
+
+  sendImage(id: string) {
+    this.images.filter(image => image !== defaultPathImage).forEach((image, index) => {
+        let isImgReq: boolean  = image.indexOf(TRUFFLE_API.basePictureUrl) != - 1
+        if(!isImgReq) {
+          this.itemService.sendImage(id, `${index}.png`, image).subscribe(res => {
+            this.images[index] = res
+          }, error => {
+            this.itemService.setMessage(`Problemas ao gravar imagens: ${error.error.message}`)
+          })
+        }
     })
   }
 
@@ -184,23 +236,21 @@ export class ItemDetailComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0]
+    let selectedFile = event.target.files[0]
 
     let reader = new FileReader()
     reader.onload = (e: any) => {
-      this.imageSelected = e.target.result
+      let index = this.images.findIndex(i=> i === defaultPathImage)
+      this.images[index] =  e.target.result
     }
 
-    reader.readAsDataURL(this.selectedFile)
+    reader.readAsDataURL(selectedFile)
   }
 
   changeDate(event: any) {
     console.log(this.dateSelected)
     let startDate = this.dateSelected.startDate
     let endDate = this.dateSelected.endDate
-    
-    //console.log('date end',moment(endDate).subtract(1, 'days'))
-    
     
     this.priceForm.controls.dtStart.setValue(startDate)
     this.priceForm.controls.dtEnd.setValue(endDate)

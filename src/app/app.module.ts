@@ -4,7 +4,7 @@ import { NotificationService } from './shared/messages/notification.service';
 import { LoginModule } from './login/login.module';
 import { SharedModule } from './shared/shared.module';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgModule } from '@angular/core';
@@ -20,7 +20,7 @@ import { HomeComponent } from './home/home.component';
 import { MenuModule } from './menu/menu.module';
 import { AccountComponent } from './account/account.component';
 import { OrderNotifyService } from './order/order.notifity.service';
-import { OrderService } from './order/order.service';
+import { ImageUtilService } from './services/image-util.service';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -44,7 +44,8 @@ registerLocaleData(localePt, 'pt-BR');
     NotificationService,
     LoggedInGuard,
     httpInterceptorProviders,
-    OrderNotifyService
+    OrderNotifyService,
+    ImageUtilService
   ],
   bootstrap: [AppComponent]
 })

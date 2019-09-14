@@ -1,3 +1,4 @@
+import { ImageUtilService } from './../services/image-util.service';
 import { Pagination } from './../shared/pagination/pagination.model';
 import { Observable } from 'rxjs/Observable';
 import { Item } from './item.model';
@@ -15,7 +16,8 @@ export class ItemService {
     constructor(
         private http: HttpClient,
         private loginService: LoginService,
-        private notificationService: NotificationService) {}
+        private notificationService: NotificationService,
+        private imageUtilSevice: ImageUtilService) {}
 
     setMessage(message: string) {
         this.notificationService.notify(message)
@@ -46,24 +48,27 @@ export class ItemService {
         return this.http.get<Item>(`${this.url}/${id}`, {headers: this.getHeaders()})
     }
 
-    getImage(imageUrl: string) {
-        let uri = `${this.url}/${imageUrl}/image`
-        return this.http.get(uri, {headers: this.getHeaders()})
+    getImage(id: string, index: string): Observable<any> {
+        let uri = `${this.url}/picture/${id}/index/${index}`
+        return this.http.get(uri, {headers: this.getHeaders(), observe: 'response', responseType: 'blob'})
     }
 
-    addItem(item: Item): Observable<any> {
-
-        if(item.id) {
-            console.log('item', item);
-            console.log('url put item', this.url);
-            return this.http.put<Item>(`${this.url}/${item.id}`, JSON.stringify(item), {headers: this.getHeaders()})
-        } else {
-            return this.http.post<Item>(`${this.url}`, JSON.stringify(item), {headers: this.getHeaders(), observe: 'response'})
-        }
+    insert(item: Item): Observable<any> {
+        return this.http.post<Item>(`${this.url}`, JSON.stringify(item), {headers: this.getHeaders(), observe: 'response'})
     }
 
-    sendImage(file: any, id: string) {
-        return this.http.post(`${this.url}/picture/${id}`, file, {headers: this.getHeadersOnlyToken()})
+    update(item: Item): Observable<any> {
+        return this.http.put<Item>(`${this.url}/${item.id}`, JSON.stringify(item), {headers: this.getHeaders()})
+    }
+
+    sendImage(id: string, filename: string,  image) {
+
+        let imageBlob = this.imageUtilSevice.dataUriToBlob(image)
+        let formData: FormData = new FormData()
+  
+        formData.set('file', imageBlob, filename)
+  
+        return this.http.post<any>(`${this.url}/picture/${id}`, formData, {headers: this.getHeadersOnlyToken(), observe: 'response'})
     }
 
     delete(id: number) {
