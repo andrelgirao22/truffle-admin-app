@@ -131,15 +131,14 @@ export class ItemDetailComponent implements OnInit {
     for(let i = 0 ; i < 3; i++) {
       let id: string = this.activatedRouter.snapshot.params['id']
       
-      //let imageName = `${TRUFFLE_API.basePictureUrl}/pro-${id}-${i}.png`
-
       this.itemService.getImage(id, `${i}`).subscribe(res => {
         console.log('image',res)
-        debugger
 
-        let reader = new FileReader()
-        let mySrc = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + reader.readAsDataURL(res.body));
-        this.images[i] = mySrc
+        const blob = new Blob([res.body], { type: 'application/octet-stream' })
+        let image = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob))
+
+        this.images[i] = image
+        
       }, error => {
         console.log(error)
       })
@@ -190,15 +189,13 @@ export class ItemDetailComponent implements OnInit {
   }
 
   sendImage(id: string) {
-    this.images.filter(image => image !== defaultPathImage).forEach((image, index) => {
-        let isImgReq: boolean  = image.indexOf(TRUFFLE_API.basePictureUrl) != - 1
-        if(!isImgReq) {
-          this.itemService.sendImage(id, `${index}.png`, image).subscribe(res => {
-            this.images[index] = res
-          }, error => {
-            this.itemService.setMessage(`Problemas ao gravar imagens: ${error.error.message}`)
-          })
-        }
+    this.images.forEach((i, index) => {
+        
+      this.itemService.sendImage(id, `${index}.png`, this.images[index]).subscribe(res => {
+        this.images[index] = res
+      }, error => {
+        this.itemService.setMessage(`Problemas ao gravar imagens: ${error.error.message}`)
+      })
     })
   }
 

@@ -61,7 +61,7 @@ export class ItemService {
         return this.http.put<Item>(`${this.url}/${item.id}`, JSON.stringify(item), {headers: this.getHeaders()})
     }
 
-    sendImage(id: string, filename: string,  image) {
+    sendImage(id: string, filename: string, image) {
 
         let imageBlob = this.imageUtilSevice.dataUriToBlob(image)
         let formData: FormData = new FormData()
