@@ -53,6 +53,11 @@ export class ItemService {
         return this.http.get(uri, {headers: this.getHeaders(), observe: 'response', responseType: 'blob'})
     }
 
+    deleteImage(id: string, index: string) {
+        let uri = `${this.url}/picture/${id}/index/${index}`
+        return this.http.delete<Item>(`${uri}`, {headers: this.getHeaders()})
+    }
+
     insert(item: Item): Observable<any> {
         return this.http.post<Item>(`${this.url}`, JSON.stringify(item), {headers: this.getHeaders(), observe: 'response'})
     }

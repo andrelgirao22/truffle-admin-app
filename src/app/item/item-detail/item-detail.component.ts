@@ -189,14 +189,34 @@ export class ItemDetailComponent implements OnInit {
   }
 
   sendImage(id: string) {
+
     this.images.forEach((i, index) => {
-        
-      this.itemService.sendImage(id, `${index}.png`, this.images[index]).subscribe(res => {
-        this.images[index] = res
-      }, error => {
-        this.itemService.setMessage(`Problemas ao gravar imagens: ${error.error.message}`)
-      })
+      debugger
+      if (typeof i === "string" && i !== defaultPathImage) {
+        this.itemService.sendImage(id, `${index}.png`, this.images[index]).subscribe(res => {
+          this.images[index] = res
+        }, error => {
+          this.itemService.setMessage(`Problemas ao gravar imagens: ${error.error.message}`)
+        })
+      }
+
     })
+  }
+
+  removerImage(_image) {
+    let index = this.images.findIndex(i => i === _image)
+    debugger
+    let defaultImage: boolean = (_image == defaultPathImage)
+    if(index > - 1 && !defaultImage) {
+
+      let id: string = this.activatedRouter.snapshot.params['id']
+  
+      this.itemService.deleteImage(id, `${index}`).subscribe(res => {
+        this.images[index] = defaultPathImage
+      }, error => {
+        console.log(error)
+      })
+    }
   }
 
   addPrice() {
