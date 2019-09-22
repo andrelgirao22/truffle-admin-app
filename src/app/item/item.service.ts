@@ -48,6 +48,15 @@ export class ItemService {
         return this.http.get<Item>(`${this.url}/${id}`, {headers: this.getHeaders()})
     }
 
+    
+    insert(item: Item): Observable<any> {
+        return this.http.post<Item>(`${this.url}`, JSON.stringify(item), {headers: this.getHeaders(), observe: 'response'})
+    }
+    
+    update(item: Item): Observable<any> {
+        return this.http.put<Item>(`${this.url}/${item.id}`, JSON.stringify(item), {headers: this.getHeaders()})
+    }
+    
     getImage(id: string, index: string): Observable<any> {
         let uri = `${this.url}/picture/${id}/index/${index}`
         return this.http.get(uri, {headers: this.getHeaders(), observe: 'response', responseType: 'blob'})
@@ -57,15 +66,7 @@ export class ItemService {
         let uri = `${this.url}/picture/${id}/index/${index}`
         return this.http.delete<Item>(`${uri}`, {headers: this.getHeaders()})
     }
-
-    insert(item: Item): Observable<any> {
-        return this.http.post<Item>(`${this.url}`, JSON.stringify(item), {headers: this.getHeaders(), observe: 'response'})
-    }
-
-    update(item: Item): Observable<any> {
-        return this.http.put<Item>(`${this.url}/${item.id}`, JSON.stringify(item), {headers: this.getHeaders()})
-    }
-
+    
     sendImage(id: string, filename: string, image) {
 
         let imageBlob = this.imageUtilSevice.dataUriToBlob(image)

@@ -199,7 +199,6 @@ export class ItemDetailComponent implements OnInit {
           this.itemService.setMessage(`Problemas ao gravar imagens: ${error.error.message}`)
         })
       }
-
     })
   }
 

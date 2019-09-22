@@ -73,7 +73,7 @@ export class CategoryComponent implements OnInit {
       
       this.loadCategories(this.pagination)
 
-      this.categoryService.deletePicture(this.categorySelected.id).subscribe(res=> {
+      this.categoryService.delete(this.categorySelected.id).subscribe(res=> {
         console.log('image deleted')
       })
 

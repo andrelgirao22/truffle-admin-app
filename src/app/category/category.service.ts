@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders, HttpInterceptor, HttpRequest, HttpHandler, Htt
 import { Injectable } from "@angular/core";
 import { TRUFFLE_API } from '../truffle.adm.api';
 import { LoginService } from '../login/login.service';
+import { ImageUtilService } from '../services/image-util.service';
 
 @Injectable()
 export class CategoryService implements HttpInterceptor {
@@ -17,7 +18,8 @@ export class CategoryService implements HttpInterceptor {
     constructor(
         private http: HttpClient,
         private loginService: LoginService,
-        private notificationService: NotificationService) {}
+        private notificationService: NotificationService,
+        private imageUtilSevice: ImageUtilService) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
@@ -100,17 +102,27 @@ export class CategoryService implements HttpInterceptor {
         return this.http.delete<Category>(`${this.urlCategory}/${id}`, {headers: this.getHeaders()}) 
     }
 
-    deletePicture(id: number) {
-        return this.http.delete<Category>(`${this.urlCategory}/picture/${id}`, {headers: this.getHeaders()}) 
+    getImage(id: string, index: string): Observable<any> {
+        let uri = `${this.urlCategory}/picture/${id}/index/${index}`
+        return this.http.get(uri, {headers: this.getHeaders(), observe: 'response', responseType: 'blob'})
     }
 
-    sendImage(file: any, id: string) {
-        return this.http.post(`${this.urlCategory}/picture/${id}`, file, {headers: this.getHeadersOnlyToken()})
+    deleteImage(id: string, index: string) {
+        let uri = `${this.urlCategory}/picture/${id}/index/${index}`
+        return this.http.delete<Category>(`${uri}`, {headers: this.getHeaders()})
+    }
+    
+    sendImage(id: string, filename: string, image) {
 
+        let imageBlob = this.imageUtilSevice.dataUriToBlob(image)
+        let formData: FormData = new FormData()
+  
+        formData.set('file', imageBlob, filename)
+  
+        return this.http.post<any>(`${this.urlCategory}/picture/${id}`, formData, {headers: this.getHeadersOnlyToken(), observe: 'response'})
     }
 
-    setCategory(category: Category) {
-        
-        return this.http.put<Category>(`${this.urlCategory}`, JSON.stringify(category), {headers: this.getHeaders()})
+    update(category: Category) {
+        return this.http.put<Category>(`${this.urlCategory}/${category.id}`, JSON.stringify(category), {headers: this.getHeaders()})
     }
 }

@@ -5,6 +5,7 @@ import { Category } from './../category.model';
 import { CategoryService } from './../category.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -23,21 +24,28 @@ export class CategoryDetailComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private notificationService: NotificationService,
-    private activedRouter: ActivatedRoute,
+    private activatedRouter: ActivatedRoute,
+    private sanitizer: DomSanitizer,
     private router: Router) { }
 
   ngOnInit() {
-    let id: string = this.activedRouter.snapshot.params['id']
+    let id: string = this.activatedRouter.snapshot.params['id']
     if(id) {
       this.categoryService.getCategory(id).subscribe(res => {
 
        this.category.id = res.id
        this.category.name = res.name
        this.category.imageUrl = res.imageUrl
-       this.imageSelected = res.imageUrl
-       this.imageSelected = `${TRUFFLE_API.basePictureUrl}/cat${id}.jpg`
-       console.log(res)
+       
+       this.categoryService.getImage(id, "0").subscribe(res => {
+        
+         const blob = new Blob([res.body], { type: 'application/octet-stream' })
+         let image = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob))
+         this.imageSelected = image
 
+      }, error => {
+        console.log("error ao carregar imagens ", error)
+      })
       }, error => {
         this.router.navigate(['/category'])
         this.notificationService.notify(`${error.status == 403 ? 'Você não tem permissão para executar esta operação': error.message}`)
@@ -52,34 +60,30 @@ export class CategoryDetailComponent implements OnInit {
     category.name = form.name
     category.id = this.category.id
     category.imageUrl = this.category.imageUrl
-    
-    console.log('form', form)
 
-    console.log(this.selectedFile)
-    const fd = new FormData()
-    fd.append('file', this.selectedFile)
-
-    this.categoryService.addCategory(category).subscribe(res => {
-      
-      if(!category.id) {
-        let location = res.headers.get('location')
-        let id = location.substring(location.lastIndexOf('/') + 1)
-        category.id = id
-      }
-      
-      if(this.selectedFile) {
-        this.categoryService.sendImage(fd, category.id + "").subscribe(res => {
-          this.sucesso(category)
-        }, error => {})
-      } else {
+    let id: string = this.activatedRouter.snapshot.params['id']
+    debugger
+    if(id) {
+      this.categoryService.update(category).subscribe(res => {
+        this.sendImage(id)
         this.sucesso(category)
-      }
-
-    }, error => {
-      this.categoryService.setMessage(`${error.error.message}`)
-    })
-
+      }, error => {})
+    } else {
+      this.categoryService.addCategory(category).subscribe(res => {
+        this.sendImage(id)
+        this.sucesso(category)
+      }, error => {})
+    }
   }
+
+  sendImage(id: string) {
+
+    this.categoryService.sendImage(id, `0.png`, this.imageSelected).subscribe(res => {
+      this.imageSelected = res
+    }, error => {
+      this.categoryService.setMessage(`Problemas ao gravar imagens: ${error.error.message}`)
+    })
+}
 
   private sucesso(category: Category) {
     this.router.navigate(['/category'])
