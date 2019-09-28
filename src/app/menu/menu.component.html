@@ -30,12 +30,12 @@
               <ul class="menu">
                 
                 <li>
-                  <a href="#">
+                  <a [routerLink]="['/order']">
                     <i class="fa fa-warning text-yellow"></i> {{ getCountPendingOrders() }}  Pendentes
                   </a>
                 </li>     
                 <li>
-                  <a href="#">
+                  <a [routerLink]="['/order']">
                     <i class="fa fa-shopping-cart text-green"></i> {{ getCountDoingOrders() }} Pedidos sendo preparados
                   </a>
                 </li>

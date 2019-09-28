@@ -30,7 +30,7 @@ export class OrderService {
 
     setOrder(order: Order): Observable<any> {
         let httpHeaders = this.getHttpOptions()
-        return this.http.put(`${this.url}/${order.id}`, JSON.stringify(order), httpHeaders)
+        return this.http.put(`${this.url}/order/${order.id}`,order, {headers: this.getHeaders()})
     }
 
 

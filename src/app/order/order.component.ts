@@ -19,6 +19,7 @@ export class OrderComponent implements OnInit {
 
   searchForm: FormGroup
   searchControlForm: FormControl
+  orderSelected: Order;
  
   constructor(
     private orderService: OrderService,
@@ -61,19 +62,28 @@ export class OrderComponent implements OnInit {
     return this.page
   }
 
-  changeStatus(_order: Order) {
-    switch(_order.status) {
-      case "PENDENTE": _order.status = "PREPARANDO"; break;
-      case "PREPARANDO": _order.status = "PRONTO"; break;
-      case "PRONTO": _order.status = "FECHADO"; break;
-    }
-
+  changeStatus() {
+    let _order = this.orderSelected
+    _order.status = this.getNewStatus(_order.status)
     this.orderService.setOrder(_order).subscribe(data => {
       this.notificationService.notify(`Status do Pedido alterado para ${_order.status}`)
     },  error => {
       this.notificationService.notify(`Problemas para altera o Status do Pedido: ${error}`)
     })
-    
+  }
+
+  getNewStatus(statusCurrent: string) {
+    switch(statusCurrent) {
+      case "PENDENTE": return "PREPARANDO"
+      case "PREPARANDO": return "PRONTO"
+      case "PRONTO": return "FECHADO"
+      default: return ""
+    }
+  }
+  
+
+  setOrder(_order: Order) {
+    this.orderSelected = _order
   }
 
   isPeding(_order: Order): boolean {

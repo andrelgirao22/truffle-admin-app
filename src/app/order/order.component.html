@@ -49,10 +49,10 @@
                 </div>
               </td>
               <td width="25">
-                <a [routerLink]="['orderDetail', order.id]"><i class="fa fa-eye"></i></a>
+                <a (click)="setOrder(order)" data-toggle="modal" data-target="#detailOrder"><i class="fa fa-eye"></i></a>
               </td>
               <td width="25">
-                <a (click)="changeStatus(order)"><i class="fa" 
+                  <a (click)="setOrder(order)" data-toggle="modal" data-target="#confirmationStatusOrder"><i class="fa"
                     [class.fa-exclamation-circle]="isPeding(order)"
                     [class.fa-clock-o]="isDoing(order)"
                     [class.fa-check-square-o]="isDone(order)"
@@ -61,6 +61,94 @@
             </tr>
             
           </table>
+
+          <!-- Modal confirmar mudanca de status pedido-->
+          <div class="modal fade" id="confirmationStatusOrder" tabindex="-1" role="dialog" aria-labelledby="confirmationStatusOrder" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3>Confirmação recebimento do pedido Nº {{ orderSelected?.id }}</h3>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+
+                      <div class="col-xs-12 col-sm-12 col-md-12">
+                        <p>O pedido mudará para o status <strong>{{ getNewStatus(orderSelected?.status) }}</strong></p>
+                      </div>
+                      
+                    </div>
+                      <div class="modal-footer"> 
+                        <button type="button" class="btn btn-default" data-dismiss="modal">cancelar</button>
+                        <button (click)="changeStatus(order)" type="button" class="btn btn-primary" data-dismiss="modal">confirmar</button>
+                      </div>
+                  </div>
+
+                </div>
+              </div>
+          </div>
+
+           <!-- Modal de detalhes do pedido-->
+          <div class="modal fade" id="detailOrder" tabindex="-1" role="dialog" aria-labelledby="detailOrder" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4>Pedido: 
+                      <strong>{{ orderSelected?.id }}</strong>
+                    </h4>
+                  </div>
+                  <div class="modal-body">
+      
+                      <div class="row">
+      
+                          <div class="col-xs-12 col-sm-12 col-md-12">
+                            <h4>Itens</h4>
+                            <table class="table table-bordered table-striped table-hover">
+                              <thead>
+                                <tr>
+                                  <th width="80">Cod</th>
+                                  <th>Item</th>
+                                  <th width="80">Qtd</th>
+                                  <th width="80">Total</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let orderItens of orderSelected?.orderItens">
+                                  <td>{{ orderItens?.item.id }}</td>
+                                  <td>{{ orderItens?.item.name }}</td>
+                                  <td align="right">{{ orderItens?.quantity }}</td>
+                                  <td align="right">{{ orderItens?.value | currency: 'BRL': 'symbol' }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+      
+                          <div class="col-xs-12 col-sm-12 col-md-12">
+                            <h4>Pagamento</h4>
+                            <table class="table table-bordered table-striped table-hover">
+                              <thead>
+                                <tr>
+                                  <th>Pagamento</th>
+                                  <th width="80">Valor</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let payment of orderSelected?.payments">
+                                  <td>{{ payment.paymentType }}</td>
+                                  <td align="right">{{ payment.value | currency: 'BRL': 'symbol' }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                    
+                      </div>
+      
+                    <div class="modal-footer"> 
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
       
         <truffle-adm-pagination 
