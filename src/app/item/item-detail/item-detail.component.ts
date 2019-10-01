@@ -171,7 +171,10 @@ export class ItemDetailComponent implements OnInit {
     } else {
       this.itemService.insert(item).subscribe(res => {
 
-        let id: string = res.headers["location"]["id"]
+        debugger
+        let id: string = res.headers.get("location")
+
+        id = id.substr(id.lastIndexOf('/') + 1)
 
         this.sendImage(id)
         this.showAlert()
