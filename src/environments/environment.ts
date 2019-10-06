@@ -6,6 +6,6 @@
 
 export const environment = {
   production: false,
-  api: "http://localhost:8080",
+  api: "https://truffle-system.herokuapp.com/",
   bucket_img: "https://s3-sa-east-1.amazonaws.com/truffle-app"
 };
