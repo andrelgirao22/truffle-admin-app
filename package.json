@@ -8,12 +8,13 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "http-server",
     "build": "ng build --prod",
-    "heroku-postbuild": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "preinstall": "npm install -g angular-cli",
+    "postinstall": "ng build && mv dist/* ."
   },
   "private": true,
   "dependencies": {
