@@ -25,21 +25,17 @@
         </div>
       </form>
 
-     
-      
       <div class="table-responsive" style="overflow: auto">
         <table class="table table-bordered table-striped" *ngIf="categories.length > 0">
           <tr>
             <th style="width: 10px">#</th>
             <th>Descrição</th>
-            <th>URL Imagem</th>
             <th>Data</th>
             <th colspan="2">Ações</th>
           </tr>
           <tr *ngFor="let category of categories">
             <td>{{ category.id }}</td>
             <td>{{ category.name }}</td>
-            <td>{{ category?.imageUrl }}</td>
             <td>{{ category.date  | date:'dd/MM/yyyy' }}</td>
             <td width="25">
               <a [routerLink]="['categoryDetail', category.id]"><i class="fa fa-pencil"></i></a>

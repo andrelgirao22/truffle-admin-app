@@ -62,7 +62,6 @@ export class CategoryDetailComponent implements OnInit {
     category.imageUrl = this.category.imageUrl
 
     let id: string = this.activatedRouter.snapshot.params['id']
-    debugger
     if(id) {
       this.categoryService.update(category).subscribe(res => {
         this.sendImage(id)
@@ -70,6 +69,11 @@ export class CategoryDetailComponent implements OnInit {
       }, error => {})
     } else {
       this.categoryService.addCategory(category).subscribe(res => {
+        
+        debugger
+        let id: string = res.headers.get("location")
+        id = id.substr(id.lastIndexOf('/') + 1)
+
         this.sendImage(id)
         this.sucesso(category)
       }, error => {})
