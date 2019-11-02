@@ -1,6 +1,6 @@
 
 export const environment = {
   production: true,
-  //api: "https://truffle-system.herokuapp.com/",
-  api: "http://localhost:8080/"
+  api: "https://truffle-system.herokuapp.com/",
+  //api: "http://localhost:8080/"
 };
