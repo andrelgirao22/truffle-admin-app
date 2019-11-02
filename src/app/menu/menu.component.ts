@@ -1,7 +1,7 @@
 import { LoginService } from './../login/login.service';
 import { Router } from '@angular/router';
 import { Menu, MenuItem } from './menu.model';
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OrderNotifyService } from '../order/order.notifity.service';
 import { Order } from '../order/order.model';
 import { TaskService } from '../shared/tasks/task.service';
@@ -22,6 +22,10 @@ export class MenuComponent implements OnInit {
     ]},
     {name: 'Operacional', icon: 'fa fa-reorder', itemMenu: [
       {item: 'Pedidos', link: '/order'}
+    ]},
+    {name: 'Relatórios', icon: 'fa fa-file-pdf-o', itemMenu: [
+      {item: 'Clientes', link: '/repoCli'},
+      {item: 'Produtos', link: '/repoProd'}
     ]},
     {name: 'Sistema', icon: 'fa fa-gear', itemMenu: [
       {item: 'Usuários', link: '/user'}

@@ -8,5 +8,7 @@ export const ROUTES: Routes = [
     {path: '', component: HomeComponent, canActivate: [LoggedInGuard]},
     {path: 'category', loadChildren: './category/category.module#CategoryModule', canActivate: [LoggedInGuard]},
     {path: 'item', loadChildren: './item/item.module#ItemModule', canActivate: [LoggedInGuard]},
-    {path: 'order', loadChildren: './order/order.module#OrderModule', canActivate: [LoggedInGuard]}
+    {path: 'order', loadChildren: './order/order.module#OrderModule', canActivate: [LoggedInGuard]},
+    {path: 'repoCli',loadChildren: './report-cli/report-cli.module#ReportCliModule', canActivate: [LoggedInGuard]},
+    {path: 'repoProd',loadChildren: './report-prod/report-prod.module#ReportProdModule', canActivate: [LoggedInGuard]},
 ]

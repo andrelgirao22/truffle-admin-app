@@ -21,6 +21,8 @@ import { MenuModule } from './menu/menu.module';
 import { AccountComponent } from './account/account.component';
 import { OrderNotifyService } from './order/order.notifity.service';
 import { ImageUtilService } from './services/image-util.service';
+import { ReportCliComponent } from './report-cli/report-cli.component';
+import { ReportProdComponent } from './report-prod/report-prod.component';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -28,7 +30,7 @@ registerLocaleData(localePt, 'pt-BR');
   declarations: [
     AppComponent,
     HomeComponent,
-    AccountComponent
+    AccountComponent,
   ],
   imports: [
     BrowserModule,

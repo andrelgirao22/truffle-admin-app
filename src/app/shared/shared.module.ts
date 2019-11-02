@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SnackbarComponent } from './messages/snackbar/snackbar.component';
 import { NgModule, ModuleWithProviders } from "@angular/core";
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 import { InputComponent } from "./input/input.component";
 import { PaginationComponent } from './pagination/pagination.component';
 
@@ -15,6 +17,7 @@ import { ModalComponent } from './modal/modal.component';
 
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { TaskService } from './tasks/task.service';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 @NgModule({
     imports: [
@@ -22,7 +25,8 @@ import { TaskService } from './tasks/task.service';
         FormsModule,
         ReactiveFormsModule,
         CurrencyMaskModule,
-        NgxDaterangepickerMd
+        NgxDaterangepickerMd,
+        PdfViewerModule
     ],
     declarations: [
         InputComponent,
@@ -38,7 +42,8 @@ import { TaskService } from './tasks/task.service';
         ReactiveFormsModule,
         CurrencyMaskModule,
         NgxDaterangepickerMd,
-        ModalComponent
+        ModalComponent,
+        PdfViewerModule
     ]
 })
 export class SharedModule {
@@ -56,5 +61,6 @@ export class SharedModule {
             ]
         }
     }
-
 }
+
+//platformBrowserDynamic().bootstrapModule(SharedModule);

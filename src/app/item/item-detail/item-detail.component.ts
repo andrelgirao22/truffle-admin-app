@@ -1,4 +1,3 @@
-import { TRUFFLE_API } from './../../truffle.adm.api';
 
 import { Category } from './../../category/category.model';
 import { Router } from '@angular/router';
@@ -171,7 +170,6 @@ export class ItemDetailComponent implements OnInit {
     } else {
       this.itemService.insert(item).subscribe(res => {
 
-        debugger
         let id: string = res.headers.get("location")
 
         id = id.substr(id.lastIndexOf('/') + 1)

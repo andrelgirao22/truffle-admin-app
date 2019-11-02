@@ -1,0 +1,5 @@
+div.report {
+    width: auto;
+    height: 460px;
+    overflow: scroll;
+}
