@@ -28,7 +28,7 @@ export class MenuComponent implements OnInit {
       {item: 'Produtos', link: '/repoProd'}
     ]},
     {name: 'Sistema', icon: 'fa fa-gear', itemMenu: [
-      {item: 'Usuários', link: '/user'}
+      {item: 'Usuários', link: '/account'}
     ]}
   ]
   
