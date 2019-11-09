@@ -6,13 +6,13 @@
     </div>
     
     <div class="box-body">
-      <div *ngIf="categories.length === 0">
+      <div *ngIf="accounts.length === 0">
         <p>Não há Contas criadas</p>
       </div>
 
       <form class="row" [formGroup]="searchForm">
         <div class="col-xs-8">
-          <a class="btn bg-red" [routerLink]="['categoryDetail']">
+          <a class="btn bg-red" [routerLink]="['detail']">
             Novo <i class="fa fa-plus"></i> 
           </a>
         </div>
@@ -31,12 +31,14 @@
             <th style="width: 10px">#</th>
             <th>Nome</th>
             <th>E-mail</th>
+            <th>Grupo</th>
             <th colspan="2">Ações</th>
           </tr>
           <tr *ngFor="let obj of accounts">
             <td>{{ obj.id }}</td>
             <td>{{ obj.name }}</td>
             <td>{{ obj.email}}</td>
+            <td>{{ obj.groups[0].name}}</td>
             <td width="25">
               <a [routerLink]="['detail', obj.id]"><i class="fa fa-pencil"></i></a>
             </td>
@@ -52,7 +54,7 @@
 
     <truffle-adm-pagination 
       [page]="getPage()" 
-      (load)="loadCategories($event)">
+      (load)="load($event)">
     </truffle-adm-pagination>
   </div>    
 </div>

@@ -1,27 +1,23 @@
 import { Injectable } from "@angular/core";
 import { TRUFFLE_API } from "../truffle.adm.api";
-import { HttpClient } from "@angular/common/http";
-import { NotificationService } from "../shared/messages/notification.service";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Pagination } from "../shared/pagination/pagination.model";
 import { Observable } from "rxjs";
+import { LoginService } from "../login/login.service";
+import { Account } from "./account.model";
 
 @Injectable()
 export class AccountService {
 
-    urlCategoryPage:string = `${TRUFFLE_API.baseUrl}/account/page`
-    urlCategory:string = `${TRUFFLE_API.baseUrl}/account`
+    urlPage:string = `${TRUFFLE_API.baseUrl}account/page`
+    url:string = `${TRUFFLE_API.baseUrl}account`
 
     constructor(
         private http: HttpClient,
-        private notificationService: NotificationService) {}
+        private loginService: LoginService) {}
 
-
-    setMessage(message: string) {
-        this.notificationService.notify(message)
-    }
-
-    getCategories(pagination: Pagination, search?:string): Observable<any> {
-        return this.http.get<Account[]>(this.urlCategoryPage, 
+    get(pagination: Pagination, search?:string): Observable<any> {
+        return this.http.get<Account[]>(this.urlPage, 
             {params: {
                 page: `${pagination.page}`,
                 linesPerPage: `${pagination.linesPerPage}`,
@@ -29,38 +25,30 @@ export class AccountService {
                 direction: pagination.direction,
                 name:search ? search : ''
             } 
-        })
+        , headers: this.getHeaders()})
+    }
+
+    getById(id: string) {
+        return this.http.get<Account>(`${this.url}/${id}`, {headers: this.getHeaders()})
     }
 
     getAll(): Observable<any> {
-        return this.http.get<Account[]>(this.urlCategory)
-    }
-
-    getCategory(id: string) {
-        return this.http.get<Account>(`${this.urlCategory}/${id}`)
-    }
-    
-    addCategory(category: any): Observable<any> {
-        console.log(`${this.urlCategory}`)
-        if(category.id) {
-            return  this.http.put<Account>(
-                    `${this.urlCategory}/${category.id}`, 
-                    JSON.stringify(category))
-        } else {
-            return  this.http.post<Account>(
-                `${this.urlCategory}`, 
-                JSON.stringify(category), 
-                {observe: 'response'},)
-        }
-    }
-
-    delete(id: number) {
-        return this.http.delete<Account>(`${this.urlCategory}/${id}`) 
+        return this.http.get<Account[]>(this.url, {headers: this.getHeaders()})
     }
 
 
-    update(category: Account) {
-        return this.http.put<Account>(`${this.urlCategory}/${category.id}`, JSON.stringify(category))
+    update(obj: Account) {
+        return this.http.put<Account>(`${this.url}/${obj.id}`, JSON.stringify(obj))
+    }
+
+    add(obj: Account) {
+        return  this.http.post<Account>(`${this.url}`, JSON.stringify(obj), {headers: this.getHeaders(), observe: 'response'},)
+    }
+
+    getHeaders() {
+        return new HttpHeaders()
+            .set('Authorization','Bearer ' + this.loginService.getLocalStorage().getItem('access_token'))
+            .set('Content-Type', 'application/json')
     }
 
 }

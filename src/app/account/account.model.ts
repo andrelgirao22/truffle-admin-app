@@ -3,7 +3,7 @@ class Account {
     id: string
     name: string
     email: string
-    group: Group[]
+    groups: Group[]
     password: string
     userImage: string
 

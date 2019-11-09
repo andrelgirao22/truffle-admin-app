@@ -18,6 +18,7 @@ import { ModalComponent } from './modal/modal.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { TaskService } from './tasks/task.service';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AccountService } from '../account/account.service';
 
 @NgModule({
     imports: [
@@ -55,6 +56,7 @@ export class SharedModule {
                 LoginService,
                 CategoryService,
                 ItemService,
+                AccountService,
                 LoggedInGuard,
                 TaskService,
                 OrderService
