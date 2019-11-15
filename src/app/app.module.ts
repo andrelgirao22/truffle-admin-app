@@ -15,7 +15,7 @@ import { AppComponent } from './app.component';
 
 import {LOCALE_ID} from '@angular/core'
 import localePt from '@angular/common/locales/pt'
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { MenuModule } from './menu/menu.module';
 import { AccountComponent } from './account/account.component';
@@ -39,6 +39,7 @@ registerLocaleData(localePt, 'pt-BR');
     RouterModule.forRoot(ROUTES)
   ],
   providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
     {provide:LOCALE_ID, useValue: "pt-BR" },
     NotificationService,
     LoggedInGuard,
