@@ -11,7 +11,7 @@ export class ReportService {
 
     constructor(private http: HttpClient,) {}
     
-    getClients(type: string, reportName: string, params: any): Observable<any> {
+    getReport(type: string, reportName: string, params: any): Observable<any> {
         let dtIni = params.dtIni
         let dtFim = params.dtFim
         let uri = `${this.url}?type=${type}&reportName=${reportName}&dt_ini=${dtIni}&dt_final=${dtFim}`
@@ -25,4 +25,5 @@ export class ReportService {
 
         return this.http.get(uri, { responseType: 'blob'})
     }
+
 }

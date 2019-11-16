@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Moment } from 'moment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReportService } from '../services/report.service';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'truffle-adm-report-cli',
@@ -21,8 +20,7 @@ export class ReportCliComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private reportService: ReportService,
-    private sanitizer: DomSanitizer,) { }
+    private reportService: ReportService) { }
 
   ngOnInit() {
     this.formSearch = this.formBuilder.group({
@@ -37,7 +35,7 @@ export class ReportCliComponent implements OnInit {
 
   callReport() {
 
-    this.reportService.getClients('portrait', 'clientes', {
+    this.reportService.getReport('portrait', 'clientes', {
       dtIni: this.startDate, dtFim: this.endDate
     }).subscribe(data => {
       
@@ -46,8 +44,6 @@ export class ReportCliComponent implements OnInit {
       let fileURL = URL.createObjectURL(file);
       console.log(fileURL)
       this.pdfSrc = fileURL
-      //console.log(reader)
-      //this.pdfSrc = report
     })
   }
 

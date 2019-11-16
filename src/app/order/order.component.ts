@@ -68,6 +68,7 @@ export class OrderComponent implements OnInit {
     this.orderService.setOrder(_order).subscribe(data => {
       this.notificationService.notify(`Status do Pedido alterado para ${_order.status}`)
     },  error => {
+      console.log(error)
       this.notificationService.notify(`Problemas para altera o Status do Pedido: ${error}`)
     })
   }
@@ -76,7 +77,7 @@ export class OrderComponent implements OnInit {
     switch(statusCurrent) {
       case "PENDENTE": return "PREPARANDO"
       case "PREPARANDO": return "PRONTO"
-      case "PRONTO": return "FECHADO"
+      case "PRONTO": return "CONCLUIDO"
       default: return ""
     }
   }
@@ -99,7 +100,7 @@ export class OrderComponent implements OnInit {
   }
 
   isClosed(_order: Order) {
-    return _order.status === 'FECHADO'
+    return _order.status === 'CONCLUIDO'
   }
 
 }

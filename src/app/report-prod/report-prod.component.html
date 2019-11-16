@@ -1,3 +1,42 @@
-<p>
-  report-prod works!
-</p>
+
+<div class="col-xs-12 col-md-12">
+  <div class="box">
+    <div class="box-header with-border">
+      <h4 class="box-title">Relatório de produtos</h4>
+    </div>
+    
+    <div class="box-body">
+
+      <form [formGroup]="formSearch">
+        <div class="row">
+          <div class="col-md-6 col-lg-6 col-sm-12">
+            <truffle-adm-input label="Data Inicio" [noHelpBlock]="false">
+              <label for="dateRange">Data de Vigência</label>
+              <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input class="form-control pull-right" ngxDaterangepickerMd (change)="changeDate($event)" autocomplete="off"
+                          [(ngModel)]="dateSelected"
+                          [locale]="{applyLabel: 'Aplicar', cancelLabel: 'Cancelar', format: 'DD/MM/YYYY'}"
+                           type="text" formControlName="dates" id="dateRange">
+              </div>
+            </truffle-adm-input>
+          </div>
+          <div class="col-md-4 col-lg-4 col-sm-12" style="margin-top: 25px;">
+              <button class="btn bg-red" (click)="callReport()" [disabled]="!formSearch.valid">Gerar relatório <i class="fa fa-check"></i> </button>
+          </div>
+        </div>
+      </form>
+
+      <!--relatorio-->
+      <div class="report" *ngIf="pdfSrc">
+        <pdf-viewer [src]="pdfSrc" 
+          [render-text]="true">
+        </pdf-viewer>
+      </div>
+
+    </div>
+
+  </div>    
+</div>
